@@ -26,13 +26,42 @@ A sleek, mobile-first web application for collecting stamps at participating Ric
    npm install
    ```
 
-2. **Run the development server:**
+2. **For Local Development (HTTP):**
    ```bash
    npm run dev
    ```
+   Access at: [http://localhost:3002](http://localhost:3002)
 
-3. **Open your browser:**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+3. **For Local Development with HTTPS (Required for iOS Camera):**
+   
+   First-time setup:
+   ```bash
+   # Install mkcert
+   brew install mkcert
+   
+   # Install local CA
+   mkcert -install
+   
+   # Generate certificates (replace IP with your network IP)
+   cd .cert
+   mkcert localhost YOUR_NETWORK_IP 127.0.0.1 ::1
+   cd ..
+   ```
+   
+   Create `.env.local` file:
+   ```
+   USE_HTTPS=true
+   PORT=3002
+   ```
+   
+   Run with HTTPS:
+   ```bash
+   npm run dev:https
+   ```
+   Access at: [https://localhost:3002](https://localhost:3002)
+
+4. **For Production (Vercel):**
+   The app automatically detects it's running on Vercel and uses the production domain with HTTPS. Just deploy and it works!
 
 ## 📖 How to Use
 
@@ -192,7 +221,21 @@ animation: {
 }
 ```
 
-## 🔧 Build for Production
+## 🔧 Deployment
+
+### Deploy to Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Import your repository
+4. Vercel will automatically detect Next.js and deploy
+5. Your app will have HTTPS automatically!
+
+The app is environment-aware:
+- **Local Development**: Uses network IP detection for phone testing
+- **Production (Vercel)**: Uses your Vercel domain automatically
+
+### Build Locally
 
 ```bash
 # Create optimized production build

@@ -1,7 +1,31 @@
 import { NextResponse } from 'next/server'
 import { networkInterfaces } from 'os'
 
-export async function GET() {
+export async function GET(request: Request) {
+  // Check if we're in production (Vercel or other hosting)
+  const isProduction = process.env.NODE_ENV === 'production'
+  const vercelUrl = process.env.VERCEL_URL
+  
+  if (isProduction && vercelUrl) {
+    // In production on Vercel, use the Vercel URL
+    return NextResponse.json({ 
+      url: `https://${vercelUrl}`,
+      isProduction: true
+    })
+  }
+  
+  if (isProduction) {
+    // In production but not Vercel, try to get from request headers
+    const host = request.headers.get('host')
+    if (host) {
+      return NextResponse.json({ 
+        url: `https://${host}`,
+        isProduction: true
+      })
+    }
+  }
+  
+  // Local development - detect network IP
   const nets = networkInterfaces()
   let networkIP = 'localhost'
 
@@ -21,9 +45,12 @@ export async function GET() {
     if (networkIP !== 'localhost') break
   }
 
+  const port = process.env.PORT || '3002'
+  const protocol = process.env.USE_HTTPS === 'true' ? 'https' : 'http'
+
   return NextResponse.json({ 
-    ip: networkIP,
-    port: process.env.PORT || '3002'
+    url: `${protocol}://${networkIP}:${port}`,
+    isProduction: false
   })
 }
 

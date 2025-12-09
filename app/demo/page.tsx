@@ -5,20 +5,22 @@ import { useEffect, useState } from 'react'
 import { LOCATIONS } from '@/lib/locations'
 import { resetPassport } from '@/lib/storage'
 import QRCode from '@/components/QRCode'
-import { generateLocationQRValue, getNetworkIP } from '@/lib/utils'
+import { generateLocationQRValue, getNetworkURL } from '@/lib/utils'
 
 export default function DemoPage() {
   const router = useRouter()
   const [networkUrl, setNetworkUrl] = useState('')
   const [loading, setLoading] = useState(true)
+  const [isProduction, setIsProduction] = useState(false)
 
   useEffect(() => {
-    async function fetchNetworkIP() {
-      const url = await getNetworkIP()
+    async function fetchNetworkURL() {
+      const url = await getNetworkURL()
       setNetworkUrl(url)
+      setIsProduction(url.includes('vercel.app') || !url.includes('localhost'))
       setLoading(false)
     }
-    fetchNetworkIP()
+    fetchNetworkURL()
   }, [])
 
   const handleReset = () => {
@@ -61,20 +63,23 @@ export default function DemoPage() {
           </div>
         )}
 
-        {/* Network Access */}
-        {!loading && networkUrl && (
+        {/* Network Access - Only show in local development */}
+        {!loading && networkUrl && !isProduction && (
           <div className="bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl shadow-xl p-6 mb-6 text-white">
             <h2 className="text-xl font-bold mb-3 text-center">
               Connect from Your Phone
             </h2>
             <p className="text-center mb-4 text-primary-100">
-              Scan this QR code with your phone to access the app
+              Scan this QR code with your phone to access the app on your local network
             </p>
             <div className="flex justify-center mb-3">
               <QRCode value={networkUrl} size={200} />
             </div>
             <p className="text-center text-sm font-mono bg-white/20 rounded-lg py-2 px-4">
               {networkUrl}
+            </p>
+            <p className="text-center text-xs text-primary-200 mt-2">
+              Local Development Mode
             </p>
           </div>
         )}

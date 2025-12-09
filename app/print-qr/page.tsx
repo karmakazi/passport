@@ -3,19 +3,19 @@
 import { useEffect, useState } from 'react'
 import { LOCATIONS } from '@/lib/locations'
 import QRCode from '@/components/QRCode'
-import { generateLocationQRValue, getNetworkIP } from '@/lib/utils'
+import { generateLocationQRValue, getNetworkURL } from '@/lib/utils'
 
 export default function PrintQRPage() {
   const [networkUrl, setNetworkUrl] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function fetchNetworkIP() {
-      const url = await getNetworkIP()
+    async function fetchNetworkURL() {
+      const url = await getNetworkURL()
       setNetworkUrl(url)
       setLoading(false)
     }
-    fetchNetworkIP()
+    fetchNetworkURL()
   }, [])
 
   if (loading) {
