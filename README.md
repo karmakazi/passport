@@ -1,0 +1,191 @@
+# 🎫 Passport - Stamp Collection App
+
+A sleek, mobile-first web application for collecting stamps at participating locations and entering contests. Built with Next.js, TypeScript, and Tailwind CSS.
+
+## ✨ Features
+
+- **📱 Mobile-First Design** - Optimized for smartphones with a beautiful, modern UI
+- **🎨 Polished Animations** - Smooth transitions and engaging interactions
+- **💾 Local Storage** - No database required - all data stored locally in the browser
+- **📸 QR Code Scanning** - Scan location-specific QR codes to collect stamps (with demo mode)
+- **🏆 Contest Entry** - Enter to win prizes once all stamps are collected
+- **✅ Progress Tracking** - Visual progress bar and stamp grid to track collection
+- **🔄 Reset Functionality** - Easy reset for testing and demos
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ installed
+- npm or yarn package manager
+
+### Installation
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+3. **Open your browser:**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📖 How to Use
+
+### For Testing/Demo:
+
+1. **Visit the Demo Page** - Navigate to `/demo` to see all available locations and reset options
+
+2. **Collect Stamps:**
+   - Click the "Scan QR Code" button on the home page
+   - Use the "Quick Select" buttons to simulate scanning at each location
+   - Or use manual entry with location IDs: `loc1`, `loc2`, `loc3`, etc.
+
+3. **Complete Your Passport:**
+   - Collect all 9 stamps from different locations
+   - Watch the progress bar fill up
+
+4. **Enter the Contest:**
+   - Once all stamps are collected, a contest entry button appears
+   - Fill out your information
+   - Submit to win amazing prizes!
+
+### For Production Deployment:
+
+1. **Replace QR Code Simulation:**
+   - Integrate a real QR code scanner library (e.g., `html5-qrcode`, `react-qr-reader`)
+   - Replace the demo scanning in `/app/scan/page.tsx`
+
+2. **Add Backend:**
+   - Connect to a database (PostgreSQL, MongoDB, etc.)
+   - Store user data and contest entries
+   - Implement authentication if needed
+
+3. **Customize Locations:**
+   - Edit `/lib/locations.ts` to add your participating businesses
+   - Update icons, names, addresses, and descriptions
+
+4. **Update Prizes:**
+   - Modify contest details in `/app/contest/page.tsx`
+   - Adjust prize information to match your campaign
+
+## 🏗️ Project Structure
+
+```
+passport/
+├── app/
+│   ├── page.tsx              # Home page with passport view
+│   ├── scan/
+│   │   └── page.tsx          # QR code scanner page
+│   ├── contest/
+│   │   └── page.tsx          # Contest entry form
+│   ├── success/
+│   │   └── page.tsx          # Success confirmation page
+│   ├── demo/
+│   │   └── page.tsx          # Demo QR codes and reset
+│   ├── layout.tsx            # Root layout with metadata
+│   └── globals.css           # Global styles
+├── components/
+│   ├── Header.tsx            # App header component
+│   ├── ProgressBar.tsx       # Progress tracking component
+│   └── StampCard.tsx         # Individual stamp card component
+├── lib/
+│   ├── types.ts              # TypeScript type definitions
+│   ├── locations.ts          # Location data and utilities
+│   └── storage.ts            # Local storage management
+├── tailwind.config.ts        # Tailwind CSS configuration
+├── tsconfig.json             # TypeScript configuration
+└── package.json              # Dependencies and scripts
+```
+
+## 🎨 Customization
+
+### Colors
+
+Edit `tailwind.config.ts` to customize the color scheme:
+
+```typescript
+colors: {
+  primary: { ... },  // Main brand color
+  accent: { ... },   // Secondary brand color
+}
+```
+
+### Locations
+
+Edit `lib/locations.ts` to add/remove locations:
+
+```typescript
+export const LOCATIONS: Location[] = [
+  {
+    id: 'loc1',
+    name: 'Your Business Name',
+    address: '123 Main St',
+    description: 'Description of the business',
+    icon: '☕', // Emoji icon
+  },
+  // Add more locations...
+]
+```
+
+### Animations
+
+Customize animations in `tailwind.config.ts`:
+
+```typescript
+animation: {
+  'fade-in': 'fadeIn 0.5s ease-in',
+  'slide-up': 'slideUp 0.5s ease-out',
+  'stamp': 'stamp 0.6s cubic-bezier(0.36, 0, 0.66, -0.56)',
+  'bounce-in': 'bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+}
+```
+
+## 🔧 Build for Production
+
+```bash
+# Create optimized production build
+npm run build
+
+# Start production server
+npm start
+```
+
+## 📱 Progressive Web App (PWA)
+
+To make this a PWA that users can install on their phones:
+
+1. Add a manifest file at `public/manifest.json`
+2. Add service worker for offline support
+3. Add meta tags for app icons in `app/layout.tsx`
+
+## 🎯 Future Enhancements
+
+- [ ] Real QR code camera scanning
+- [ ] Backend API integration
+- [ ] User authentication
+- [ ] Push notifications
+- [ ] Social sharing integration
+- [ ] Analytics tracking
+- [ ] Admin dashboard for businesses
+- [ ] Multiple passport campaigns
+- [ ] Leaderboards and achievements
+
+## 📄 License
+
+This project is open source and available for customization and commercial use.
+
+## 🤝 Support
+
+For questions or issues, please contact:
+- Email: support@passport.com
+- Website: https://passport.com
+
+---
+
+Built with ❤️ using Next.js, TypeScript, and Tailwind CSS
+
