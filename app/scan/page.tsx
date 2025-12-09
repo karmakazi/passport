@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { LOCATIONS, getLocationById } from '@/lib/locations'
 import { collectStamp, isStampCollected } from '@/lib/storage'
+import CameraScanner from '@/components/CameraScanner'
 
 export default function ScanPage() {
   const router = useRouter()
@@ -13,6 +14,7 @@ export default function ScanPage() {
   const [error, setError] = useState('')
   const [scannedLocation, setScannedLocation] = useState<string>('')
   const [manualEntry, setManualEntry] = useState('')
+  const [showCamera, setShowCamera] = useState(true)
 
   const handleScan = (locationId: string) => {
     const location = getLocationById(locationId)
@@ -29,8 +31,9 @@ export default function ScanPage() {
       return
     }
 
-    // Simulate scanning delay
+    // Process the stamp collection
     setScanning(true)
+    setShowCamera(false)
     setTimeout(() => {
       collectStamp(locationId)
       setScannedLocation(location.name)
@@ -41,7 +44,24 @@ export default function ScanPage() {
       setTimeout(() => {
         router.push('/')
       }, 2500)
-    }, 1000)
+    }, 500)
+  }
+
+  const handleQRScan = (decodedText: string) => {
+    // Extract location ID from URL or use directly
+    try {
+      const url = new URL(decodedText)
+      const locationId = url.searchParams.get('location')
+      if (locationId) {
+        handleScan(locationId)
+      } else {
+        setError('Invalid QR code format')
+        setTimeout(() => setError(''), 3000)
+      }
+    } catch {
+      // Maybe it's just a location ID
+      handleScan(decodedText)
+    }
   }
 
   // Auto-scan if location parameter is present
@@ -105,36 +125,26 @@ export default function ScanPage() {
       </div>
 
       <main className="container mx-auto px-4 py-6 max-w-4xl">
-        {/* Scanner Simulation Area */}
+        {/* Camera Scanner */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-          <div className="relative aspect-square max-w-md mx-auto mb-6 bg-gray-900 rounded-2xl overflow-hidden">
-            {scanning ? (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-white"></div>
+          {showCamera && !scanning && (
+            <CameraScanner 
+              onScanSuccess={handleQRScan}
+              onScanError={(err) => {
+                setError(err)
+                setShowCamera(false)
+              }}
+            />
+          )}
+          
+          {scanning && (
+            <div className="relative aspect-square max-w-md mx-auto mb-6 bg-gray-900 rounded-2xl overflow-hidden flex items-center justify-center">
+              <div className="text-center text-white">
+                <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-white mx-auto mb-4"></div>
+                <p>Processing...</p>
               </div>
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-white p-8">
-                  <svg className="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                  </svg>
-                  <p className="text-lg mb-2">Camera View</p>
-                  <p className="text-sm text-gray-400">
-                    Point camera at QR code
-                  </p>
-                  {/* Scanning Frame */}
-                  <div className="mt-8 relative">
-                    <div className="w-48 h-48 mx-auto border-4 border-primary-400 rounded-2xl relative">
-                      <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-white"></div>
-                      <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-white"></div>
-                      <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-white"></div>
-                      <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-white"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {error && (
             <div className="bg-red-100 border-2 border-red-500 text-red-700 px-4 py-3 rounded-xl mb-4 animate-bounce-in">
