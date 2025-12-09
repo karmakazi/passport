@@ -3,7 +3,7 @@ export interface Location {
   name: string
   address: string
   description: string
-  icon: string
+  imageUrl: string
 }
 
 export interface Stamp {

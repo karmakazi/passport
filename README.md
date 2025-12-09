@@ -1,6 +1,6 @@
-# 🎫 Passport - Stamp Collection App
+# Richmond Hill Passport - Stamp Collection App
 
-A sleek, mobile-first web application for collecting stamps at participating locations and entering contests. Built with Next.js, TypeScript, and Tailwind CSS.
+A sleek, mobile-first web application for collecting stamps at participating Richmond Hill businesses and entering contests. Built with Next.js, TypeScript, and Tailwind CSS.
 
 ## ✨ Features
 
@@ -124,12 +124,27 @@ export const LOCATIONS: Location[] = [
   {
     id: 'loc1',
     name: 'Your Business Name',
-    address: '123 Main St',
+    address: '123 Main St, Richmond Hill',
     description: 'Description of the business',
-    icon: '☕', // Emoji icon
+    imageUrl: '/images/locations/your-business.jpg',
   },
   // Add more locations...
 ]
+```
+
+### Replacing Placeholder Images
+
+The app currently uses SVG placeholders for location images. To replace them with actual photos:
+
+1. Take high-quality photos of each business (landscape orientation, 16:9 ratio recommended)
+2. Optimize images for web (recommended: 800x450px, JPEG format, compressed)
+3. Place images in `public/images/locations/`
+4. Update the `imageUrl` in `lib/locations.ts` to point to your images
+5. Supported formats: JPG, PNG, WebP
+
+Example:
+```typescript
+imageUrl: '/images/locations/downtown-coffee.jpg',
 ```
 
 ### Animations

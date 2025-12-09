@@ -28,7 +28,7 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
       
       {percentage === 100 && (
         <div className="mt-2 text-center text-sm font-semibold text-accent-600 animate-bounce-in">
-          🎉 All stamps collected! Ready to enter the contest!
+          All stamps collected! Ready to enter the contest!
         </div>
       )}
     </div>

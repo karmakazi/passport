@@ -66,7 +66,13 @@ export default function ContestPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center animate-bounce-in">
-          <div className="text-8xl mb-4">✅</div>
+          <div className="mb-4 flex justify-center">
+            <div className="bg-green-500 rounded-full p-6">
+              <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          </div>
           <h2 className="text-3xl font-bold text-green-600 mb-2">Already Entered!</h2>
           <p className="text-gray-700 mb-6">You've already submitted your contest entry. Good luck!</p>
           <button
@@ -84,7 +90,13 @@ export default function ContestPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center animate-bounce-in">
-          <div className="text-8xl mb-4">🔒</div>
+          <div className="mb-4 flex justify-center">
+            <div className="bg-gray-400 rounded-full p-6">
+              <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+          </div>
           <h2 className="text-3xl font-bold text-gray-800 mb-2">Not Yet!</h2>
           <p className="text-gray-700 mb-6">
             You need to collect all stamps before entering the contest.
@@ -102,9 +114,11 @@ export default function ContestPage() {
         <div className="container mx-auto max-w-4xl flex items-center gap-4">
           <button
             onClick={handleBack}
-            className="text-2xl hover:bg-white/20 rounded-full p-2 transition-all"
+            className="hover:bg-white/20 rounded-full p-2 transition-all"
           >
-            ←
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
           <div>
             <h1 className="text-2xl font-bold">Enter Contest</h1>
@@ -116,7 +130,6 @@ export default function ContestPage() {
       <main className="container mx-auto px-4 py-6 max-w-2xl">
         {/* Celebration Banner */}
         <div className="bg-gradient-to-r from-accent-500 to-primary-500 rounded-2xl shadow-xl p-6 text-white text-center mb-6 animate-bounce-in">
-          <div className="text-5xl mb-3">🎉</div>
           <h2 className="text-2xl font-bold mb-2">Congratulations!</h2>
           <p className="text-primary-100">
             You've collected all stamps! Enter your details below to win amazing prizes.
@@ -197,7 +210,9 @@ export default function ContestPage() {
             {error && (
               <div className="bg-red-100 border-2 border-red-500 text-red-700 px-4 py-3 rounded-xl animate-bounce-in">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">⚠️</span>
+                  <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
                   <span>{error}</span>
                 </div>
               </div>
@@ -215,7 +230,7 @@ export default function ContestPage() {
                   <span>Submitting...</span>
                 </div>
               ) : (
-                <span>Submit Entry 🎁</span>
+                <span>Submit Entry</span>
               )}
             </button>
           </form>
@@ -223,36 +238,35 @@ export default function ContestPage() {
 
         {/* Prize Information */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mt-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <span>🏆</span>
-            <span>Prizes</span>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">
+            Prizes
           </h3>
           <ul className="space-y-3">
             <li className="flex items-start gap-3 text-gray-700">
-              <span className="text-xl">🥇</span>
+              <div className="font-bold text-primary-600">1st</div>
               <div>
                 <div className="font-semibold">Grand Prize</div>
                 <div className="text-sm text-gray-600">$500 gift card + merchandise bundle</div>
               </div>
             </li>
             <li className="flex items-start gap-3 text-gray-700">
-              <span className="text-xl">🥈</span>
+              <div className="font-bold text-primary-600">2nd</div>
               <div>
-                <div className="font-semibold">2nd Place</div>
+                <div className="font-semibold">Second Place</div>
                 <div className="text-sm text-gray-600">$250 gift card</div>
               </div>
             </li>
             <li className="flex items-start gap-3 text-gray-700">
-              <span className="text-xl">🥉</span>
+              <div className="font-bold text-primary-600">3rd</div>
               <div>
-                <div className="font-semibold">3rd Place</div>
+                <div className="font-semibold">Third Place</div>
                 <div className="text-sm text-gray-600">$100 gift card</div>
               </div>
             </li>
             <li className="flex items-start gap-3 text-gray-700">
-              <span className="text-xl">🎁</span>
+              <div className="font-bold text-primary-600">10x</div>
               <div>
-                <div className="font-semibold">10 Runner-ups</div>
+                <div className="font-semibold">Runner-ups</div>
                 <div className="text-sm text-gray-600">$25 gift cards</div>
               </div>
             </li>

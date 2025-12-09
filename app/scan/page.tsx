@@ -59,7 +59,13 @@ export default function ScanPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center animate-bounce-in">
-          <div className="text-8xl mb-4 animate-stamp">✓</div>
+          <div className="mb-4 flex justify-center">
+            <div className="bg-primary-500 rounded-full p-6 animate-stamp">
+              <svg className="w-20 h-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          </div>
           <h2 className="text-3xl font-bold text-primary-600 mb-2">Stamp Collected!</h2>
           <p className="text-xl text-gray-700 mb-4">{scannedLocation}</p>
           <div className="text-gray-500">Redirecting...</div>
@@ -75,9 +81,11 @@ export default function ScanPage() {
         <div className="container mx-auto max-w-4xl flex items-center gap-4">
           <button
             onClick={handleBack}
-            className="text-2xl hover:bg-white/20 rounded-full p-2 transition-all"
+            className="hover:bg-white/20 rounded-full p-2 transition-all"
           >
-            ←
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
           <div>
             <h1 className="text-2xl font-bold">Scan QR Code</h1>
@@ -97,7 +105,9 @@ export default function ScanPage() {
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-white p-8">
-                  <div className="text-6xl mb-4">📷</div>
+                  <svg className="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                  </svg>
                   <p className="text-lg mb-2">Camera View</p>
                   <p className="text-sm text-gray-400">
                     Point camera at QR code
@@ -119,7 +129,9 @@ export default function ScanPage() {
           {error && (
             <div className="bg-red-100 border-2 border-red-500 text-red-700 px-4 py-3 rounded-xl mb-4 animate-bounce-in">
               <div className="flex items-center gap-2">
-                <span className="text-xl">⚠️</span>
+                <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
                 <span>{error}</span>
               </div>
             </div>
@@ -132,9 +144,8 @@ export default function ScanPage() {
 
         {/* Manual Entry for Demo */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <span>🔑</span>
-            <span>Demo Mode - Manual Entry</span>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">
+            Demo Mode - Manual Entry
           </h3>
           <p className="text-sm text-gray-600 mb-4">
             For testing, enter a location ID manually (e.g., loc1, loc2, etc.)
@@ -160,9 +171,8 @@ export default function ScanPage() {
 
         {/* Quick Select Locations */}
         <div className="bg-white rounded-2xl shadow-xl p-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <span>📍</span>
-            <span>Quick Select (Demo)</span>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">
+            Quick Select (Demo)
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {LOCATIONS.map((location) => {
@@ -182,7 +192,6 @@ export default function ScanPage() {
                   `}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="text-3xl">{location.icon}</div>
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-gray-800 truncate">
                         {location.name}
@@ -192,7 +201,7 @@ export default function ScanPage() {
                       </div>
                       {collected && (
                         <div className="text-xs text-primary-600 font-semibold mt-1">
-                          ✓ Already collected
+                          Already collected
                         </div>
                       )}
                     </div>

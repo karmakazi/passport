@@ -54,14 +54,13 @@ export default function HomePage() {
 
         {/* Instructions */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 animate-slide-up">
-          <h2 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
-            <span>📍</span>
-            <span>How It Works</span>
+          <h2 className="text-xl font-bold text-gray-800 mb-3">
+            How It Works
           </h2>
           <ol className="space-y-2 text-gray-600">
             <li className="flex gap-3">
               <span className="font-bold text-primary-600 flex-shrink-0">1.</span>
-              <span>Visit participating locations around town</span>
+              <span>Visit participating locations in Richmond Hill</span>
             </li>
             <li className="flex gap-3">
               <span className="font-bold text-primary-600 flex-shrink-0">2.</span>
@@ -73,7 +72,7 @@ export default function HomePage() {
             </li>
             <li className="flex gap-3">
               <span className="font-bold text-primary-600 flex-shrink-0">4.</span>
-              <span>Win amazing prizes! 🎁</span>
+              <span>Win amazing prizes</span>
             </li>
           </ol>
         </div>
@@ -101,7 +100,7 @@ export default function HomePage() {
         {/* Contest Entry Button */}
         {allCollected && !passportData.contestEntered && (
           <div className="bg-gradient-to-r from-accent-500 to-primary-500 rounded-2xl shadow-xl p-6 text-white text-center animate-bounce-in">
-            <h3 className="text-2xl font-bold mb-2">🎉 Congratulations!</h3>
+            <h3 className="text-2xl font-bold mb-2">Congratulations!</h3>
             <p className="mb-4">You've collected all stamps!</p>
             <button
               onClick={handleContestClick}
@@ -114,12 +113,11 @@ export default function HomePage() {
 
         {passportData.contestEntered && (
           <div className="bg-green-100 border-2 border-green-500 rounded-2xl shadow-lg p-6 text-center">
-            <div className="text-5xl mb-3">✅</div>
             <h3 className="text-xl font-bold text-green-800 mb-2">
               Contest Entry Submitted!
             </h3>
             <p className="text-green-700">
-              Thank you, {passportData.userName}! Good luck! 🍀
+              Thank you, {passportData.userName}! Good luck!
             </p>
           </div>
         )}
@@ -131,14 +129,15 @@ export default function HomePage() {
           onClick={handleScanClick}
           className="bg-gradient-to-r from-primary-600 to-accent-600 text-white font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3"
         >
-          <span className="text-2xl">📷</span>
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+          </svg>
           <span className="text-lg">Scan QR Code</span>
         </button>
         <button
           onClick={handleDemoClick}
           className="bg-white text-gray-700 font-semibold py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 border-2 border-gray-200"
         >
-          <span>🎮</span>
           <span className="text-sm">Demo & Reset</span>
         </button>
       </div>

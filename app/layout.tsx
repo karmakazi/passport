@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Passport - Collect Stamps & Win',
-  description: 'Scan QR codes at participating locations to collect stamps and enter to win!',
+  title: 'Richmond Hill Passport - Collect Stamps & Win',
+  description: 'Visit local Richmond Hill businesses, collect stamps and enter to win amazing prizes!',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   themeColor: '#0ea5e9',
 }
