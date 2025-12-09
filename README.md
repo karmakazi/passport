@@ -38,21 +38,53 @@ A sleek, mobile-first web application for collecting stamps at participating Ric
 
 ### For Testing/Demo:
 
-1. **Visit the Demo Page** - Navigate to `/demo` to see all available locations and reset options
+#### Desktop Testing:
 
-2. **Collect Stamps:**
-   - Click the "Scan QR Code" button on the home page
-   - Use the "Quick Select" buttons to simulate scanning at each location
+1. **Start the dev server:**
+   ```bash
+   npm run dev
+   ```
+
+2. **Visit the Demo Page** - Navigate to `http://localhost:3002/demo`
+
+3. **Desktop Simulation:**
+   - Use the "Quick Select" buttons on the scan page
    - Or use manual entry with location IDs: `loc1`, `loc2`, `loc3`, etc.
 
-3. **Complete Your Passport:**
+#### Mobile Testing (Recommended):
+
+1. **Start the dev server:**
+   ```bash
+   npm run dev
+   ```
+   Note the network URL shown (e.g., `http://192.168.1.100:3002`)
+
+2. **Connect your phone:**
+   - Make sure your phone and laptop are on the same WiFi network
+   - Visit `/demo` on your laptop
+   - Scan the "Connect from Your Phone" QR code with your phone's camera
+   - The app will open on your phone
+
+3. **Scan Business QR Codes:**
+   - On your phone, tap "Scan QR Code"
+   - Scan any of the 9 business QR codes shown on the demo page
+   - Watch the stamp get collected with animation!
+
+4. **Complete Your Passport:**
    - Collect all 9 stamps from different locations
    - Watch the progress bar fill up
 
-4. **Enter the Contest:**
+5. **Enter the Contest:**
    - Once all stamps are collected, a contest entry button appears
    - Fill out your information
    - Submit to win amazing prizes!
+
+#### Print QR Codes for Physical Testing:
+
+1. Visit `/print-qr` to get printable versions
+2. Print each QR code page
+3. Display them at different locations
+4. Test the real scanning experience
 
 ### For Production Deployment:
 

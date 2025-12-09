@@ -1,11 +1,25 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { LOCATIONS } from '@/lib/locations'
 import { resetPassport } from '@/lib/storage'
+import QRCode from '@/components/QRCode'
+import { generateLocationQRValue, getNetworkIP } from '@/lib/utils'
 
 export default function DemoPage() {
   const router = useRouter()
+  const [networkUrl, setNetworkUrl] = useState('')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchNetworkIP() {
+      const url = await getNetworkIP()
+      setNetworkUrl(url)
+      setLoading(false)
+    }
+    fetchNetworkIP()
+  }, [])
 
   const handleReset = () => {
     if (confirm('Are you sure you want to reset your passport? This will clear all collected stamps.')) {
@@ -39,6 +53,32 @@ export default function DemoPage() {
       </div>
 
       <main className="container mx-auto px-4 py-6 max-w-4xl">
+        {/* Loading State */}
+        {loading && (
+          <div className="bg-white rounded-2xl shadow-xl p-8 mb-6 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500 mx-auto mb-4"></div>
+            <p className="text-gray-600">Detecting network IP...</p>
+          </div>
+        )}
+
+        {/* Network Access */}
+        {!loading && networkUrl && (
+          <div className="bg-gradient-to-r from-primary-500 to-accent-500 rounded-2xl shadow-xl p-6 mb-6 text-white">
+            <h2 className="text-xl font-bold mb-3 text-center">
+              Connect from Your Phone
+            </h2>
+            <p className="text-center mb-4 text-primary-100">
+              Scan this QR code with your phone to access the app
+            </p>
+            <div className="flex justify-center mb-3">
+              <QRCode value={networkUrl} size={200} />
+            </div>
+            <p className="text-center text-sm font-mono bg-white/20 rounded-lg py-2 px-4">
+              {networkUrl}
+            </p>
+          </div>
+        )}
+
         {/* Instructions */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4">
@@ -47,11 +87,11 @@ export default function DemoPage() {
           <ol className="space-y-3 text-gray-700">
             <li className="flex gap-3">
               <span className="font-bold text-primary-600">1.</span>
-              <span>Go to the Scan page and use the "Quick Select" buttons to simulate scanning</span>
+              <span>Scan the QR code above with your phone to open the app</span>
             </li>
             <li className="flex gap-3">
               <span className="font-bold text-primary-600">2.</span>
-              <span>Or use manual entry with location IDs (e.g., loc1, loc2, loc3...)</span>
+              <span>Click "Scan QR Code" and scan any business QR code below</span>
             </li>
             <li className="flex gap-3">
               <span className="font-bold text-primary-600">3.</span>
@@ -64,41 +104,61 @@ export default function DemoPage() {
           </ol>
         </div>
 
-        {/* QR Code Placeholders */}
+        {/* QR Code Grid */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-800 mb-4">
-            Location QR Codes
+            Business Location QR Codes
           </h2>
           <p className="text-sm text-gray-600 mb-6">
-            In production, these would be actual QR codes displayed at each location. 
-            For this prototype, use the Scan page to collect stamps.
+            Scan these QR codes with your phone's camera app to collect stamps. Each QR code represents a business location.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {LOCATIONS.map((location) => (
               <div 
                 key={location.id}
-                className="border-2 border-gray-200 rounded-xl p-4 hover:border-primary-500 transition-all"
+                className="border-2 border-gray-200 rounded-xl p-4 hover:border-primary-500 transition-all bg-gray-50"
               >
-                <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg mb-3 flex items-center justify-center">
-                  <div className="text-center p-4">
-                    <svg className="w-full h-full text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                    </svg>
-                    <div className="text-xs text-gray-500 font-mono bg-white px-2 py-1 rounded mt-2">
-                      {location.id}
+                <div className="flex justify-center mb-3">
+                  {networkUrl ? (
+                    <QRCode 
+                      value={generateLocationQRValue(networkUrl, location.id)} 
+                      size={180}
+                    />
+                  ) : (
+                    <div className="w-[180px] h-[180px] bg-gray-200 rounded-xl flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-500"></div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 <h3 className="font-bold text-gray-800 text-center text-sm mb-1">
                   {location.name}
                 </h3>
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-gray-500 text-center mb-2">
                   {location.address}
                 </p>
+                <div className="text-xs text-gray-400 text-center font-mono bg-white px-2 py-1 rounded">
+                  {location.id}
+                </div>
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Print QR Codes */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">
+            Print QR Codes
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Generate printable QR codes for physical display at each business location.
+          </p>
+          <button
+            onClick={() => router.push('/print-qr')}
+            className="bg-primary-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl"
+          >
+            View Printable QR Codes
+          </button>
         </div>
 
         {/* Reset Button */}

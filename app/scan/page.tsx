@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { LOCATIONS, getLocationById } from '@/lib/locations'
 import { collectStamp, isStampCollected } from '@/lib/storage'
 
 export default function ScanPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [scanning, setScanning] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -42,6 +43,15 @@ export default function ScanPage() {
       }, 2500)
     }, 1000)
   }
+
+  // Auto-scan if location parameter is present
+  useEffect(() => {
+    const locationId = searchParams.get('location')
+    if (locationId) {
+      handleScan(locationId)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
 
   const handleManualSubmit = (e: React.FormEvent) => {
     e.preventDefault()
