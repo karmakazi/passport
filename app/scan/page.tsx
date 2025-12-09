@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { LOCATIONS, getLocationById } from '@/lib/locations'
 import { collectStamp, isStampCollected } from '@/lib/storage'
 import CameraScanner from '@/components/CameraScanner'
 
-export default function ScanPage() {
+function ScanPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [scanning, setScanning] = useState(false)
@@ -233,6 +233,18 @@ export default function ScanPage() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function ScanPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    }>
+      <ScanPageContent />
+    </Suspense>
   )
 }
 
