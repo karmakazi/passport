@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import AuthGuard from '@/components/AuthGuard'
 
 export const metadata: Metadata = {
   title: 'Richmond Hill Passport to Culture - Collect Stamps & Win',
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-gradient-to-br from-primary-50 via-white to-accent-50 min-h-screen">
-        {children}
+        <AuthGuard>
+          {children}
+        </AuthGuard>
       </body>
     </html>
   )

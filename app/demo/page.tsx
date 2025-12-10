@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { LOCATIONS } from '@/lib/locations'
 import { resetPassport } from '@/lib/storage'
+import { logout, getUserData } from '@/lib/auth'
 import QRCode from '@/components/QRCode'
 import { generateLocationQRValue, getNetworkURL } from '@/lib/utils'
 
@@ -12,6 +13,7 @@ export default function DemoPage() {
   const [networkUrl, setNetworkUrl] = useState('')
   const [loading, setLoading] = useState(true)
   const [isProduction, setIsProduction] = useState(false)
+  const [userData, setUserData] = useState<ReturnType<typeof getUserData>>(null)
 
   useEffect(() => {
     async function fetchNetworkURL() {
@@ -21,12 +23,20 @@ export default function DemoPage() {
       setLoading(false)
     }
     fetchNetworkURL()
+    setUserData(getUserData())
   }, [])
 
   const handleReset = () => {
     if (confirm('Are you sure you want to reset your passport? This will clear all collected stamps.')) {
       resetPassport()
       router.push('/')
+    }
+  }
+
+  const handleLogout = () => {
+    if (confirm('Are you sure you want to log out? Your progress will be saved.')) {
+      logout()
+      router.push('/login')
     }
   }
 
@@ -170,6 +180,29 @@ export default function DemoPage() {
             View Printable QR Codes
           </button>
         </div>
+
+        {/* User Info & Account */}
+        {userData && (
+          <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Account Info
+            </h2>
+            <div className="space-y-2 mb-4">
+              <p className="text-gray-600">
+                <span className="font-semibold">Email:</span> {userData.email}
+              </p>
+              <p className="text-gray-600">
+                <span className="font-semibold">Postal Code:</span> {userData.postalCode}
+              </p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="bg-gray-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-600 transition-all shadow-lg hover:shadow-xl"
+            >
+              Log Out
+            </button>
+          </div>
+        )}
 
         {/* Reset Button */}
         <div className="bg-white rounded-2xl shadow-xl p-6">
