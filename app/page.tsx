@@ -14,13 +14,25 @@ export default function HomePage() {
   const [passportData, setPassportData] = useState<PassportData | null>(null)
   const [collectedCount, setCollectedCount] = useState(0)
   const [allCollected, setAllCollected] = useState(false)
+  const [showInstructions, setShowInstructions] = useState(true)
 
   useEffect(() => {
     const data = getPassportData()
     setPassportData(data)
     setCollectedCount(getCollectedStampsCount())
     setAllCollected(getAllStampsCollected())
+    
+    // Check if user has closed instructions before
+    const instructionsClosed = localStorage.getItem('instructions-closed')
+    if (instructionsClosed === 'true') {
+      setShowInstructions(false)
+    }
   }, [])
+
+  const handleCloseInstructions = () => {
+    setShowInstructions(false)
+    localStorage.setItem('instructions-closed', 'true')
+  }
 
   const handleScanClick = () => {
     router.push('/scan')
@@ -52,30 +64,66 @@ export default function HomePage() {
           <ProgressBar current={collectedCount} total={LOCATIONS.length} />
         </div>
 
-        {/* Instructions */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 animate-slide-up">
-          <h2 className="text-xl font-bold text-gray-800 mb-3">
-            How It Works
-          </h2>
-          <ol className="space-y-2 text-gray-600">
-            <li className="flex gap-3">
-              <span className="font-bold text-primary-600 flex-shrink-0">1.</span>
-              <span>Visit participating locations in Richmond Hill</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="font-bold text-primary-600 flex-shrink-0">2.</span>
-              <span>Scan the QR code at each location to collect your stamp</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="font-bold text-primary-600 flex-shrink-0">3.</span>
-              <span>Collect all {LOCATIONS.length} stamps to enter the contest</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="font-bold text-primary-600 flex-shrink-0">4.</span>
-              <span>Win amazing prizes</span>
-            </li>
-          </ol>
-        </div>
+        {/* Instructions - Show unless closed OR all stamps collected */}
+        {showInstructions && !allCollected && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 animate-slide-up relative">
+            <button
+              onClick={handleCloseInstructions}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Close"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h2 className="text-xl font-bold text-gray-800 mb-3 pr-8">
+              How It Works
+            </h2>
+            <ol className="space-y-2 text-gray-600">
+              <li className="flex gap-3">
+                <span className="font-bold text-primary-600 flex-shrink-0">1.</span>
+                <span>Visit participating locations in Richmond Hill</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-primary-600 flex-shrink-0">2.</span>
+                <span>Scan the QR code at each location to collect your stamp</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-primary-600 flex-shrink-0">3.</span>
+                <span>Collect all {LOCATIONS.length} stamps to enter the contest</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-primary-600 flex-shrink-0">4.</span>
+                <span>Win amazing prizes</span>
+              </li>
+            </ol>
+          </div>
+        )}
+
+        {/* Contest Entry Button - Show where instructions were */}
+        {allCollected && !passportData.contestEntered && (
+          <div className="bg-gradient-to-r from-accent-500 to-primary-500 rounded-2xl shadow-xl p-6 text-white text-center animate-bounce-in mb-6">
+            <h3 className="text-2xl font-bold mb-2">Congratulations!</h3>
+            <p className="mb-4">You've collected all stamps!</p>
+            <button
+              onClick={handleContestClick}
+              className="bg-white text-accent-600 font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              Enter Contest Now
+            </button>
+          </div>
+        )}
+
+        {passportData.contestEntered && (
+          <div className="bg-green-100 border-2 border-green-500 rounded-2xl shadow-lg p-6 text-center mb-6">
+            <h3 className="text-xl font-bold text-green-800 mb-2">
+              Contest Entry Submitted!
+            </h3>
+            <p className="text-green-700">
+              Thank you, {passportData.userName}! Good luck!
+            </p>
+          </div>
+        )}
 
         {/* Stamps Grid */}
         <div className="mb-6">
@@ -97,30 +145,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Contest Entry Button */}
-        {allCollected && !passportData.contestEntered && (
-          <div className="bg-gradient-to-r from-accent-500 to-primary-500 rounded-2xl shadow-xl p-6 text-white text-center animate-bounce-in">
-            <h3 className="text-2xl font-bold mb-2">Congratulations!</h3>
-            <p className="mb-4">You've collected all stamps!</p>
-            <button
-              onClick={handleContestClick}
-              className="bg-white text-accent-600 font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
-            >
-              Enter Contest Now
-            </button>
-          </div>
-        )}
-
-        {passportData.contestEntered && (
-          <div className="bg-green-100 border-2 border-green-500 rounded-2xl shadow-lg p-6 text-center">
-            <h3 className="text-xl font-bold text-green-800 mb-2">
-              Contest Entry Submitted!
-            </h3>
-            <p className="text-green-700">
-              Thank you, {passportData.userName}! Good luck!
-            </p>
-          </div>
-        )}
       </main>
 
       {/* Floating Action Buttons */}
