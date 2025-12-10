@@ -15,6 +15,7 @@ function ScanPageContent() {
   const [scannedLocation, setScannedLocation] = useState<string>('')
   const [manualEntry, setManualEntry] = useState('')
   const [showCamera, setShowCamera] = useState(true)
+  const [resetCounter, setResetCounter] = useState(0)
 
   const handleScan = (locationId: string) => {
     const location = getLocationById(locationId)
@@ -22,6 +23,7 @@ function ScanPageContent() {
     if (!location) {
       // Invalid location - show error but keep camera active
       setError('Invalid QR code. Please try again.')
+      setResetCounter(prev => prev + 1) // Reset scanner state
       setTimeout(() => setError(''), 3000)
       return
     }
@@ -29,6 +31,7 @@ function ScanPageContent() {
     if (isStampCollected(locationId)) {
       // Already collected - show warning but keep camera active
       setError(`You've already collected the stamp from ${location.name}!`)
+      setResetCounter(prev => prev + 1) // Reset scanner state
       setTimeout(() => setError(''), 3000)
       return
     }
@@ -59,6 +62,7 @@ function ScanPageContent() {
       } else {
         // Invalid format - show error but keep scanning
         setError('Invalid QR code format')
+        setResetCounter(prev => prev + 1) // Reset scanner state
         setTimeout(() => setError(''), 3000)
       }
     } catch {
@@ -138,6 +142,7 @@ function ScanPageContent() {
                   setError(err)
                   setShowCamera(false)
                 }}
+                resetTrigger={resetCounter}
               />
               
               {/* Floating error message over camera */}

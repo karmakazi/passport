@@ -6,14 +6,23 @@ import { Html5Qrcode } from 'html5-qrcode'
 interface CameraScannerProps {
   onScanSuccess: (decodedText: string) => void
   onScanError?: (error: string) => void
+  resetTrigger?: number // Used to reset scanner state from parent
 }
 
-export default function CameraScanner({ onScanSuccess, onScanError }: CameraScannerProps) {
+export default function CameraScanner({ onScanSuccess, onScanError, resetTrigger }: CameraScannerProps) {
   const scannerRef = useRef<Html5Qrcode | null>(null)
   const [isScanning, setIsScanning] = useState(false)
   const [error, setError] = useState<string>('')
   const [isProcessing, setIsProcessing] = useState(false)
   const hasScannedRef = useRef(false)
+
+  // Reset processing state when resetTrigger changes (error occurred)
+  useEffect(() => {
+    if (resetTrigger !== undefined && resetTrigger > 0) {
+      setIsProcessing(false)
+      hasScannedRef.current = false
+    }
+  }, [resetTrigger])
 
   useEffect(() => {
     const scanner = new Html5Qrcode('qr-reader')
