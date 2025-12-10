@@ -1,19 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { getPassportData } from '@/lib/storage'
 
 export default function SuccessPage() {
   const router = useRouter()
-  const [userName, setUserName] = useState('')
-
-  useEffect(() => {
-    const data = getPassportData()
-    if (data.userName) {
-      setUserName(data.userName)
-    }
-  }, [])
 
   const handleBackHome = () => {
     router.push('/')
@@ -35,7 +25,7 @@ export default function SuccessPage() {
 
           {/* Success Message */}
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            Congratulations{userName && `, ${userName}`}!
+            Congratulations!
           </h1>
 
           <p className="text-xl text-gray-700 mb-6">
