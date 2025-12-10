@@ -1,6 +1,6 @@
-# Richmond Hill Passport - Stamp Collection App
+# Richmond Hill Passport to Culture - Stamp Collection App
 
-A sleek, mobile-first web application for collecting stamps at participating Richmond Hill businesses and entering contests. Built with Next.js, TypeScript, and Tailwind CSS.
+A sleek, mobile-first web application for exploring Richmond Hill's cultural businesses. Collect stamps at participating locations and enter contests to win prizes! Built with Next.js, TypeScript, and Tailwind CSS.
 
 ## ✨ Features
 

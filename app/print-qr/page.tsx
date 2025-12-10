@@ -96,7 +96,7 @@ export default function PrintQRPage() {
                 Scan to Collect Your Stamp!
               </h2>
               <p className="text-lg">
-                Richmond Hill Passport Program
+                Richmond Hill Passport to Culture
               </p>
             </div>
 

@@ -45,7 +45,7 @@ export default function SuccessPage() {
           {/* Details */}
           <div className="bg-gradient-to-r from-primary-50 to-accent-50 rounded-2xl p-6 mb-8">
             <p className="text-gray-700 mb-4">
-              Thank you for participating in the Richmond Hill Passport program! 
+              Thank you for participating in the Richmond Hill Passport to Culture program! 
             </p>
             <div className="space-y-2 text-sm text-gray-600">
               <p>Winners will be announced on December 31st</p>

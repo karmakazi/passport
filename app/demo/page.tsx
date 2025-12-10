@@ -71,7 +71,7 @@ export default function DemoPage() {
             </h2>
             <p className="text-center mb-4 text-primary-100">
               {isProduction 
-                ? 'Scan this QR code to access the Richmond Hill Passport app'
+                ? 'Scan this QR code to access the Richmond Hill Passport to Culture app'
                 : 'Scan this QR code with your phone to access the app on your local network'
               }
             </p>

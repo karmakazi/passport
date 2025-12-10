@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Richmond Hill Passport - Collect Stamps & Win',
-  description: 'Visit local Richmond Hill businesses, collect stamps and enter to win amazing prizes!',
+  title: 'Richmond Hill Passport to Culture - Collect Stamps & Win',
+  description: 'Explore Richmond Hill culture! Visit local businesses, collect stamps and enter to win amazing prizes!',
 }
 
 export const viewport: Viewport = {
