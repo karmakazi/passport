@@ -4,18 +4,10 @@ import { networkInterfaces } from 'os'
 export async function GET(request: Request) {
   // Check if we're in production (Vercel or other hosting)
   const isProduction = process.env.NODE_ENV === 'production'
-  const vercelUrl = process.env.VERCEL_URL
-  
-  if (isProduction && vercelUrl) {
-    // In production on Vercel, use the Vercel URL
-    return NextResponse.json({ 
-      url: `https://${vercelUrl}`,
-      isProduction: true
-    })
-  }
   
   if (isProduction) {
-    // In production but not Vercel, try to get from request headers
+    // In production, always use the host header (actual domain being accessed)
+    // This works for both Vercel's default domain and custom domains
     const host = request.headers.get('host')
     if (host) {
       return NextResponse.json({ 
