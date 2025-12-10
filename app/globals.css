@@ -47,6 +47,26 @@ body {
   animation: scan 2s ease-in-out infinite;
 }
 
+/* Hide default html5-qrcode scanner overlay */
+#qr-reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+#qr-reader__dashboard_section {
+  display: none !important;
+}
+
+#qr-reader__dashboard_section_csr {
+  display: none !important;
+}
+
+/* Hide the default scanning square from html5-qrcode */
+#qr-shaded-region {
+  display: none !important;
+}
+
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
   width: 8px;
