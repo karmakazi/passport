@@ -13,13 +13,11 @@ export default function CameraScanner({ onScanSuccess, onScanError, resetTrigger
   const scannerRef = useRef<Html5Qrcode | null>(null)
   const [isScanning, setIsScanning] = useState(false)
   const [error, setError] = useState<string>('')
-  const [isProcessing, setIsProcessing] = useState(false)
   const hasScannedRef = useRef(false)
 
-  // Reset processing state when resetTrigger changes (error occurred)
+  // Reset scanner state when resetTrigger changes (error occurred)
   useEffect(() => {
     if (resetTrigger !== undefined && resetTrigger > 0) {
-      setIsProcessing(false)
       hasScannedRef.current = false
     }
   }, [resetTrigger])
@@ -42,7 +40,6 @@ export default function CameraScanner({ onScanSuccess, onScanError, resetTrigger
             // Success callback - only process once
             if (!hasScannedRef.current) {
               hasScannedRef.current = true
-              setIsProcessing(true)
               onScanSuccess(decodedText)
             }
           },
@@ -98,7 +95,7 @@ export default function CameraScanner({ onScanSuccess, onScanError, resetTrigger
       <div id="qr-reader" className="w-full h-full" />
       
       {/* Scanning overlay with animation */}
-      {isScanning && !isProcessing && (
+      {isScanning && (
         <>
           {/* Scanning line animation */}
           <div className="absolute inset-0 pointer-events-none">
@@ -122,21 +119,6 @@ export default function CameraScanner({ onScanSuccess, onScanError, resetTrigger
             </div>
           </div>
         </>
-      )}
-      
-      {/* Processing state */}
-      {isProcessing && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-primary-500 rounded-full mb-4 animate-bounce-in">
-              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <div className="text-white text-lg font-semibold">QR Code Detected!</div>
-            <div className="text-white/80 text-sm mt-1">Processing...</div>
-          </div>
-        </div>
       )}
     </div>
   )
