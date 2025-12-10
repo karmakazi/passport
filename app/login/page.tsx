@@ -58,7 +58,6 @@ export default function LoginPage() {
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8">
-          <div className="text-5xl mb-4">✈️</div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Richmond Hill Passport to Culture
           </h1>
@@ -129,13 +128,13 @@ export default function LoginPage() {
             </div>
 
             {/* Terms and Conditions */}
-            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
+            <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl dark:bg-gray-50">
               <input
                 type="checkbox"
                 id="terms"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                className="mt-1 w-5 h-5 text-primary-600 bg-white border-gray-300 rounded focus:ring-primary-500 dark:bg-white dark:border-gray-300"
                 disabled={isSubmitting}
                 required
               />

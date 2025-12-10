@@ -67,6 +67,30 @@ body {
   display: none !important;
 }
 
+/* Force checkbox styling in all modes */
+input[type="checkbox"] {
+  background-color: white !important;
+  border-color: #d1d5db !important;
+  color: #0ea5e9 !important;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #0ea5e9 !important;
+  border-color: #0ea5e9 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  input[type="checkbox"] {
+    background-color: white !important;
+    border-color: #d1d5db !important;
+  }
+  
+  input[type="checkbox"]:checked {
+    background-color: #0ea5e9 !important;
+    border-color: #0ea5e9 !important;
+  }
+}
+
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
   width: 8px;
