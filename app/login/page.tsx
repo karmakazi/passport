@@ -67,16 +67,16 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Login Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        {/* Login Form - Force white background in all modes */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 dark:bg-white">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 dark:text-gray-800">
             Get Started
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2 dark:text-gray-700">
                 Email Address
               </label>
               <input
@@ -85,7 +85,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all bg-white text-gray-900 placeholder:text-gray-400"
                 disabled={isSubmitting}
                 required
               />
@@ -93,7 +93,7 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2 dark:text-gray-700">
                 Password
               </label>
               <input
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Min. 6 characters"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all bg-white text-gray-900 placeholder:text-gray-400"
                 disabled={isSubmitting}
                 required
                 minLength={6}
@@ -111,7 +111,7 @@ export default function LoginPage() {
 
             {/* Postal Code */}
             <div>
-              <label htmlFor="postalCode" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="postalCode" className="block text-sm font-semibold text-gray-700 mb-2 dark:text-gray-700">
                 Postal Code
               </label>
               <input
@@ -120,7 +120,7 @@ export default function LoginPage() {
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value.toUpperCase())}
                 placeholder="L4C 1A1"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all font-mono"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all font-mono bg-white text-gray-900 placeholder:text-gray-400"
                 disabled={isSubmitting}
                 required
                 maxLength={7}
@@ -139,7 +139,7 @@ export default function LoginPage() {
                 disabled={isSubmitting}
                 required
               />
-              <label htmlFor="terms" className="text-sm text-gray-700">
+              <label htmlFor="terms" className="text-sm text-gray-700 dark:text-gray-700">
                 I agree to the{' '}
                 <a href="#" className="text-primary-600 hover:text-primary-700 font-semibold">
                   terms and conditions
