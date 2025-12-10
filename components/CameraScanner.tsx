@@ -12,6 +12,8 @@ export default function CameraScanner({ onScanSuccess, onScanError }: CameraScan
   const scannerRef = useRef<Html5Qrcode | null>(null)
   const [isScanning, setIsScanning] = useState(false)
   const [error, setError] = useState<string>('')
+  const [isProcessing, setIsProcessing] = useState(false)
+  const hasScannedRef = useRef(false)
 
   useEffect(() => {
     const scanner = new Html5Qrcode('qr-reader')
@@ -23,12 +25,17 @@ export default function CameraScanner({ onScanSuccess, onScanError }: CameraScan
         await scanner.start(
           { facingMode: 'environment' }, // Use back camera on mobile
           {
-            fps: 10,
+            fps: 20, // Increased from 10 to 20 for faster detection
             qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0,
           },
           (decodedText) => {
-            // Success callback
-            onScanSuccess(decodedText)
+            // Success callback - only process once
+            if (!hasScannedRef.current) {
+              hasScannedRef.current = true
+              setIsProcessing(true)
+              onScanSuccess(decodedText)
+            }
           },
           (errorMessage) => {
             // Error callback (this fires frequently, so we don't show it)
@@ -80,10 +87,45 @@ export default function CameraScanner({ onScanSuccess, onScanError }: CameraScan
   return (
     <div className="relative aspect-square max-w-md mx-auto mb-6 bg-gray-900 rounded-2xl overflow-hidden">
       <div id="qr-reader" className="w-full h-full" />
-      {isScanning && (
-        <div className="absolute bottom-4 left-0 right-0 text-center">
-          <div className="inline-block bg-black/70 text-white px-4 py-2 rounded-full text-sm">
-            Point camera at QR code
+      
+      {/* Scanning overlay with animation */}
+      {isScanning && !isProcessing && (
+        <>
+          {/* Scanning line animation */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border-4 border-primary-400 rounded-2xl">
+              {/* Corner brackets */}
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-white"></div>
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-white"></div>
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-white"></div>
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-white"></div>
+              
+              {/* Animated scanning line */}
+              <div className="absolute left-0 right-0 h-1 bg-primary-400 shadow-lg shadow-primary-400/50 animate-scan"></div>
+            </div>
+          </div>
+          
+          {/* Instructions */}
+          <div className="absolute bottom-4 left-0 right-0 text-center">
+            <div className="inline-flex items-center gap-2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
+              <div className="w-2 h-2 bg-primary-400 rounded-full animate-pulse"></div>
+              <span>Scanning for QR code...</span>
+            </div>
+          </div>
+        </>
+      )}
+      
+      {/* Processing state */}
+      {isProcessing && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-primary-500 rounded-full mb-4 animate-bounce-in">
+              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div className="text-white text-lg font-semibold">QR Code Detected!</div>
+            <div className="text-white/80 text-sm mt-1">Processing...</div>
           </div>
         </div>
       )}
