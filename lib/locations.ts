@@ -50,20 +50,6 @@ export const LOCATIONS: Location[] = [
     description: 'Wood-fired authentic pizzeria',
     imageUrl: '/images/locations/pizza.jpg',
   },
-  {
-    id: 'loc8',
-    name: 'Zen Yoga Studio',
-    address: '258 Willow Way, Richmond Hill',
-    description: 'Mindfulness & yoga classes',
-    imageUrl: '/images/locations/yoga.jpg',
-  },
-  {
-    id: 'loc9',
-    name: 'Sweet Treats Bakery',
-    address: '369 Spruce St, Richmond Hill',
-    description: 'Fresh baked goods daily',
-    imageUrl: '/images/locations/bakery.jpg',
-  },
 ]
 
 export const getLocationById = (id: string): Location | undefined => {

@@ -96,11 +96,11 @@ A sleek, mobile-first web application for exploring Richmond Hill's cultural bus
 
 3. **Scan Business QR Codes:**
    - On your phone, tap "Scan QR Code"
-   - Scan any of the 9 business QR codes shown on the demo page
+   - Scan any of the 7 business QR codes shown on the demo page
    - Watch the stamp get collected with animation!
 
 4. **Complete Your Passport:**
-   - Collect all 9 stamps from different locations
+   - Collect all 7 stamps from different locations
    - Watch the progress bar fill up
 
 5. **Enter the Contest:**

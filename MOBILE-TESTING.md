@@ -22,13 +22,13 @@ Your dev server is already running! Look for the network URL in your terminal:
 
 ### Step 4: Test Scanning Business QR Codes
 1. On your phone, tap the "Scan QR Code" button
-2. Back on your laptop, scroll down to see the 9 business QR codes
+2. Back on your laptop, scroll down to see the 7 business QR codes
 3. Point your phone's camera at any business QR code
 4. The app will automatically detect it and collect the stamp!
 5. Watch the cool stamp collection animation
 
 ### Step 5: Collect All Stamps
-- Scan all 9 different business QR codes
+- Scan all 7 different business QR codes
 - Watch your progress bar fill up
 - After collecting all stamps, enter the contest!
 
