@@ -4,6 +4,7 @@ export interface Location {
   address: string
   description: string
   imageUrl: string
+  isBonus?: boolean
 }
 
 export interface Stamp {

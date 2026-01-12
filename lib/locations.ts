@@ -49,6 +49,7 @@ export const LOCATIONS: Location[] = [
     address: "Visit Richmond Hill's wave pool for a fun bonus stamp.",
     description: 'Wave Pool',
     imageUrl: '/images/locations/pizza.jpg',
+    isBonus: true,
   },
 ]
 

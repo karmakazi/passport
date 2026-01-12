@@ -71,9 +71,12 @@ export const isStampCollected = (locationId: string): boolean => {
   return data.stamps[locationId]?.collectedAt !== null
 }
 
+// Required stamps to complete passport (excluding bonus locations)
+const REQUIRED_STAMPS = 6
+
 export const getAllStampsCollected = (): boolean => {
-  const data = getPassportData()
-  return Object.values(data.stamps).every((stamp) => stamp.collectedAt !== null)
+  const collectedCount = getCollectedStampsCount()
+  return collectedCount >= REQUIRED_STAMPS
 }
 
 export const getCollectedStampsCount = (): number => {

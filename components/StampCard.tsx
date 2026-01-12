@@ -51,7 +51,7 @@ export default function StampCard({ location, isCollected, collectedAt }: StampC
         </p>
         
         {/* Status Badge */}
-        <div className="mt-auto">
+        <div className="mt-auto flex items-center gap-2">
           {isCollected ? (
             <div className="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold">
               <span>Collected</span>
@@ -59,6 +59,11 @@ export default function StampCard({ location, isCollected, collectedAt }: StampC
           ) : (
             <div className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-500 rounded-full text-xs">
               <span>Not Visited</span>
+            </div>
+          )}
+          {location.isBonus && (
+            <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent-500 text-white rounded-full text-xs font-semibold">
+              <span>BONUS</span>
             </div>
           )}
         </div>
