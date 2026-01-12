@@ -36,7 +36,6 @@ export default function ContestPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center px-4">
       <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
         <div className="mb-6">
-          <div className="text-6xl mb-4 animate-bounce-in">🎉</div>
           <h2 className="text-3xl font-bold text-gray-800 mb-3">Congratulations!</h2>
           <p className="text-lg text-gray-600 mb-2">You've collected all stamps!</p>
           <p className="text-gray-500">You're ready to enter the contest.</p>
