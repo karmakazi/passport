@@ -50,8 +50,8 @@ export default function LoginPage() {
           <Image 
             src="/images/RH_Logo_RGB_S.png" 
             alt="Richmond Hill Logo" 
-            width={160} 
-            height={160}
+            width={240} 
+            height={240}
             className="flex-shrink-0"
           />
           <div className="text-left">

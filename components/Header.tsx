@@ -10,8 +10,8 @@ export default function Header() {
           <Image 
             src="/images/RH_Logo_RGB_S.png" 
             alt="Richmond Hill Logo" 
-            width={120} 
-            height={120}
+            width={180} 
+            height={180}
             className="flex-shrink-0"
           />
           <div className="flex flex-col">
