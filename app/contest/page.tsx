@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getAllStampsCollected, getPassportData } from '@/lib/storage'
 
@@ -9,7 +9,6 @@ const CONTEST_URL = process.env.NEXT_PUBLIC_CONTEST_URL || 'https://www.richmond
 
 export default function ContestPage() {
   const router = useRouter()
-  const [countdown, setCountdown] = useState(3)
 
   useEffect(() => {
     const allCollected = getAllStampsCollected()
@@ -26,52 +25,45 @@ export default function ContestPage() {
       router.push('/success')
       return
     }
-
-    // Countdown before redirecting to external contest
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer)
-          // Redirect to external contest page
-          window.location.href = CONTEST_URL
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
-
-    return () => clearInterval(timer)
   }, [router])
+
+  const handleEnterContest = () => {
+    // Open contest page in new tab/window
+    window.open(CONTEST_URL, '_blank')
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center px-4">
       <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
         <div className="mb-6">
-          <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Congratulations!</h2>
-          <p className="text-gray-600">You've collected all stamps!</p>
+          <div className="text-6xl mb-4 animate-bounce-in">🎉</div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-3">Congratulations!</h2>
+          <p className="text-lg text-gray-600 mb-2">You've collected all stamps!</p>
+          <p className="text-gray-500">You're ready to enter the contest.</p>
         </div>
         
-        <div className="mb-6 p-4 bg-primary-50 rounded-xl">
-          <p className="text-sm text-gray-700">
-            Redirecting to contest entry in <span className="text-2xl font-bold text-primary-600">{countdown}</span> seconds...
+        <div className="mb-6 p-6 bg-gradient-to-r from-primary-50 to-accent-50 rounded-xl border-2 border-primary-200">
+          <p className="text-sm text-gray-700 mb-2">
+            Click below to visit the official contest entry page
+          </p>
+          <p className="text-xs text-gray-500">
+            (Opens in a new window)
           </p>
         </div>
 
-        <div className="animate-pulse">
-          <div className="h-2 bg-primary-200 rounded-full overflow-hidden">
-            <div className="h-full bg-primary-600 rounded-full" style={{ width: `${((3 - countdown) / 3) * 100}%`, transition: 'width 1s linear' }}></div>
-          </div>
-        </div>
+        <button
+          onClick={handleEnterContest}
+          className="w-full bg-gradient-to-r from-primary-600 to-accent-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02] active:scale-95 mb-4"
+        >
+          Enter Contest Now
+        </button>
 
-        <div className="mt-6">
-          <a 
-            href={CONTEST_URL}
-            className="text-sm text-primary-600 hover:text-primary-700 underline"
-          >
-            Click here if not redirected automatically
-          </a>
-        </div>
+        <button
+          onClick={() => router.push('/')}
+          className="w-full bg-gray-100 text-gray-700 font-semibold py-3 px-8 rounded-xl hover:bg-gray-200 transition-all"
+        >
+          Back to Passport
+        </button>
       </div>
     </div>
   )
