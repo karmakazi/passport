@@ -1,5 +1,4 @@
 export interface UserData {
-  email: string
   postalCode: string
   agreedToTerms: boolean
   timestamp: Date
@@ -14,12 +13,11 @@ export function isAuthenticated(): boolean {
   return auth === 'true'
 }
 
-export function login(email: string, password: string, postalCode: string): void {
+export function login(postalCode: string): void {
   if (typeof window === 'undefined') return
   
   const userData: UserData = {
-    email,
-    postalCode,
+    postalCode: postalCode.toUpperCase(),
     agreedToTerms: true,
     timestamp: new Date(),
   }

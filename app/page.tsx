@@ -120,7 +120,7 @@ export default function HomePage() {
               Contest Entry Submitted!
             </h3>
             <p className="text-green-700">
-              Thank you, {passportData.userName}! Good luck!
+              Thank you! Good luck!
             </p>
           </div>
         )}

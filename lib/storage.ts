@@ -81,11 +81,9 @@ export const getCollectedStampsCount = (): number => {
   return Object.values(data.stamps).filter((stamp) => stamp.collectedAt !== null).length
 }
 
-export const enterContest = (name: string, email: string): void => {
+export const enterContest = (): void => {
   const data = getPassportData()
   data.contestEntered = true
-  data.userName = name
-  data.userEmail = email
   savePassportData(data)
 }
 

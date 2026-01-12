@@ -6,8 +6,6 @@ import { login } from '@/lib/auth'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [error, setError] = useState('')
@@ -17,26 +15,16 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
 
-    // Validation
-    if (!email || !password || !postalCode) {
-      setError('Please fill in all fields')
+    // Validation - only first 3 characters (Forward Sortation Area)
+    if (!postalCode || postalCode.length !== 3) {
+      setError('Please enter the first 3 characters of your postal code')
       return
     }
 
-    if (!email.includes('@')) {
-      setError('Please enter a valid email address')
-      return
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters')
-      return
-    }
-
-    // Basic postal code validation (Canadian format: A1A 1A1)
-    const postalCodeRegex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/
+    // Validate format: Letter-Number-Letter (e.g., L4C)
+    const postalCodeRegex = /^[A-Za-z]\d[A-Za-z]$/
     if (!postalCodeRegex.test(postalCode)) {
-      setError('Please enter a valid postal code (e.g., L4C 1A1)')
+      setError('Invalid format. Example: L4C')
       return
     }
 
@@ -45,10 +33,10 @@ export default function LoginPage() {
       return
     }
 
-    // Demo login - just store in local storage
+    // Store in local storage and redirect
     setIsSubmitting(true)
     setTimeout(() => {
-      login(email, password, postalCode)
+      login(postalCode)
       router.push('/')
     }, 500)
   }
@@ -73,58 +61,25 @@ export default function LoginPage() {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2 dark:text-gray-700">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all bg-white text-gray-900 placeholder:text-gray-400"
-                disabled={isSubmitting}
-                required
-              />
-            </div>
-
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2 dark:text-gray-700">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Min. 6 characters"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all bg-white text-gray-900 placeholder:text-gray-400"
-                disabled={isSubmitting}
-                required
-                minLength={6}
-              />
-            </div>
-
-            {/* Postal Code */}
+            {/* Postal Code - First 3 Characters Only */}
             <div>
               <label htmlFor="postalCode" className="block text-sm font-semibold text-gray-700 mb-2 dark:text-gray-700">
-                Postal Code
+                Enter First 3 Characters of Your Postal Code
               </label>
               <input
                 type="text"
                 id="postalCode"
                 value={postalCode}
                 onChange={(e) => setPostalCode(e.target.value.toUpperCase())}
-                placeholder="L4C 1A1"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all font-mono bg-white text-gray-900 placeholder:text-gray-400"
+                placeholder="L4C"
+                className="w-full px-6 py-4 text-center text-2xl tracking-widest border-2 border-gray-300 rounded-xl focus:border-primary-500 focus:outline-none transition-all font-mono bg-white text-gray-900 placeholder:text-gray-400"
                 disabled={isSubmitting}
                 required
-                maxLength={7}
+                maxLength={3}
               />
-              <p className="text-xs text-gray-500 mt-1">Canadian postal code format</p>
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                Example: <span className="font-semibold">L4C</span> (Letter-Number-Letter)
+              </p>
             </div>
 
             {/* Terms and Conditions */}

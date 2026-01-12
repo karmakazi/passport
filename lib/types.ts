@@ -14,7 +14,5 @@ export interface Stamp {
 export interface PassportData {
   stamps: Record<string, Stamp>
   contestEntered: boolean
-  userName?: string
-  userEmail?: string
 }
 
