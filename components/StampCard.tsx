@@ -13,7 +13,7 @@ export default function StampCard({ location, isCollected, collectedAt }: StampC
   return (
     <div 
       className={`
-        relative bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300
+        relative bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 flex flex-col
         ${isCollected ? 'border-2 border-primary-500' : 'border-2 border-gray-200'}
         hover:shadow-xl
       `}
@@ -39,7 +39,7 @@ export default function StampCard({ location, isCollected, collectedAt }: StampC
         )}
       </div>
       
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-grow">
         {/* Location Name */}
         <h3 className="text-base font-bold text-gray-800 mb-2">
           {location.name}
@@ -51,7 +51,7 @@ export default function StampCard({ location, isCollected, collectedAt }: StampC
         </p>
         
         {/* Status Badge */}
-        <div>
+        <div className="mt-auto">
           {isCollected ? (
             <div className="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-semibold">
               <span>Collected</span>
