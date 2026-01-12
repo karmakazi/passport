@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { login } from '@/lib/auth'
 
 export default function LoginPage() {
@@ -45,13 +46,22 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center px-4 py-8">
       <div className="max-w-md w-full">
         {/* Logo/Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Richmond Hill Passport to Culture
-          </h1>
-          <p className="text-gray-600">
-            Explore local culture, collect stamps, win prizes!
-          </p>
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <Image 
+            src="/images/RH_Logo_RGB_S.png" 
+            alt="Richmond Hill Logo" 
+            width={160} 
+            height={160}
+            className="flex-shrink-0"
+          />
+          <div className="text-left">
+            <h1 className="text-3xl font-bold text-gray-800 mb-1">
+              Passport to Culture
+            </h1>
+            <p className="text-gray-600">
+              Explore local culture, collect stamps, win prizes!
+            </p>
+          </div>
         </div>
 
         {/* Login Form - Force white background in all modes */}
