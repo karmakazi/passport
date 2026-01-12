@@ -189,9 +189,6 @@ export default function DemoPage() {
             </h2>
             <div className="space-y-2 mb-4">
               <p className="text-gray-600">
-                <span className="font-semibold">Email:</span> {userData.email}
-              </p>
-              <p className="text-gray-600">
                 <span className="font-semibold">Postal Code:</span> {userData.postalCode}
               </p>
             </div>
