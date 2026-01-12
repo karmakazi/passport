@@ -55,12 +55,20 @@ export default function LoginPage() {
             className="mb-4"
           />
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
               Passport to Culture
             </h1>
-            <p className="text-gray-600">
-              Explore local culture, collect stamps, win prizes!
-            </p>
+            <div className="space-y-3 text-gray-600 text-left">
+              <p>
+                Explore the wide array of arts, heritage, culture, and events across Richmond Hill.
+              </p>
+              <p>
+                Scan QR codes at participating sites, programs, and events to collect stamps.
+              </p>
+              <p>
+                Complete your passport for a chance to win the City of Richmond Hill Cultural Prize Pack.
+              </p>
+            </div>
           </div>
         </div>
 
