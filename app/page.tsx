@@ -82,19 +82,19 @@ export default function HomePage() {
             <ol className="space-y-2 text-gray-600">
               <li className="flex gap-3">
                 <span className="font-bold text-primary-600 flex-shrink-0">1.</span>
-                <span>Visit participating locations in Richmond Hill</span>
+                <span>Visit a participating site, event, or program. Find all the participating sites and events here</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-primary-600 flex-shrink-0">2.</span>
-                <span>Scan the QR code at each location to collect your stamp</span>
+                <span>Scan the QR code on-site</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-primary-600 flex-shrink-0">3.</span>
-                <span>Collect all {LOCATIONS.length} stamps to enter the contest</span>
+                <span>Get your stamp instantly</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-primary-600 flex-shrink-0">4.</span>
-                <span>Win amazing prizes</span>
+                <span>Plan your next stop cultural adventure</span>
               </li>
             </ol>
           </div>
