@@ -41,12 +41,12 @@ export default function StampCard({ location, isCollected, collectedAt }: StampC
       
       <div className="p-4">
         {/* Location Name */}
-        <h3 className="text-base font-bold text-gray-800 mb-1 line-clamp-2">
+        <h3 className="text-base font-bold text-gray-800 mb-2">
           {location.name}
         </h3>
         
-        {/* Location Address */}
-        <p className="text-xs text-gray-500 mb-2 line-clamp-1">
+        {/* Location Description */}
+        <p className="text-sm text-gray-600 mb-3 leading-relaxed">
           {location.address}
         </p>
         
