@@ -70,20 +70,39 @@ export const collectStamp = async (locationId: string): Promise<PassportData> =>
   
   // Try to sync to Supabase
   const userData = getUserData()
+  
+  // Debug logging
+  console.log('🔄 Attempting stamp sync:', {
+    hasUserId: !!userData?.userId,
+    userId: userData?.userId,
+    isConfigured: isSupabaseConfigured(),
+    isOnline: isOnline(),
+    hasSupabase: !!supabase,
+    locationId
+  })
+  
   if (userData?.userId && isSupabaseConfigured() && isOnline() && supabase) {
     try {
-      await supabase
+      const { data, error } = await supabase
         .from('collected_stamps')
         .insert({
           user_id: userData.userId,
           location_id: locationId
         })
-      console.log('✅ Stamp synced to Supabase')
+        .select()
+      
+      if (error) {
+        console.error('❌ Supabase error:', error)
+        markSyncPending()
+      } else {
+        console.log('✅ Stamp synced to Supabase:', data)
+      }
     } catch (error) {
-      console.warn('⚠️ Failed to sync stamp to Supabase, saved locally:', error)
+      console.error('❌ Exception during sync:', error)
       markSyncPending()
     }
   } else {
+    console.warn('⚠️ Skipping sync - conditions not met')
     markSyncPending()
   }
   

@@ -3,6 +3,15 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 
+// Debug logging
+if (typeof window !== 'undefined') {
+  console.log('🔧 Supabase Config Check:')
+  console.log('  URL present:', !!supabaseUrl)
+  console.log('  Key present:', !!supabaseKey)
+  if (supabaseUrl) console.log('  URL:', supabaseUrl.substring(0, 30) + '...')
+  if (supabaseKey) console.log('  Key:', supabaseKey.substring(0, 20) + '...')
+}
+
 // Create Supabase client
 export const supabase = supabaseUrl && supabaseKey 
   ? createClient(supabaseUrl, supabaseKey)
@@ -10,7 +19,11 @@ export const supabase = supabaseUrl && supabaseKey
 
 // Helper to check if Supabase is configured
 export const isSupabaseConfigured = (): boolean => {
-  return supabase !== null
+  const configured = supabase !== null
+  if (!configured && typeof window !== 'undefined') {
+    console.warn('⚠️ Supabase NOT configured - missing environment variables')
+  }
+  return configured
 }
 
 // Helper to check if we're online and can reach Supabase
