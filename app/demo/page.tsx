@@ -26,9 +26,9 @@ export default function DemoPage() {
     setUserData(getUserData())
   }, [])
 
-  const handleReset = () => {
-    if (confirm('Are you sure you want to reset your passport? This will clear all collected stamps.')) {
-      resetPassport()
+  const handleReset = async () => {
+    if (confirm('Are you sure you want to reset your passport? This will clear all collected stamps from your device AND the database.')) {
+      await resetPassport()
       router.push('/')
     }
   }

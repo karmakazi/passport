@@ -148,10 +148,53 @@ export const enterContest = async (): Promise<void> => {
   }
 }
 
-export const resetPassport = (): void => {
+export const resetPassport = async (): Promise<void> => {
   if (typeof window === 'undefined') return
+  
+  // Delete from Supabase first
+  const userData = getUserData()
+  if (userData?.userId && isSupabaseConfigured() && supabase) {
+    try {
+      console.log('🗑️ Deleting stamps from Supabase for user:', userData.userId)
+      
+      // Delete all stamps for this user
+      const { error: stampsError } = await supabase
+        .from('collected_stamps')
+        .delete()
+        .eq('user_id', userData.userId)
+      
+      if (stampsError) {
+        console.error('Failed to delete stamps:', stampsError)
+      } else {
+        console.log('✅ Stamps deleted from Supabase')
+      }
+      
+      // Delete contest entry if exists
+      const { error: contestError } = await supabase
+        .from('contest_entries')
+        .delete()
+        .eq('user_id', userData.userId)
+      
+      if (contestError && contestError.code !== 'PGRST116') {
+        console.error('Failed to delete contest entry:', contestError)
+      }
+      
+      // Optionally delete the user record itself (uncomment if you want to fully reset)
+      // const { error: userError } = await supabase
+      //   .from('users')
+      //   .delete()
+      //   .eq('id', userData.userId)
+      
+      console.log('✅ Supabase data cleared')
+    } catch (error) {
+      console.error('Error clearing Supabase data:', error)
+    }
+  }
+  
+  // Clear localStorage
   localStorage.removeItem(STORAGE_KEY)
   localStorage.removeItem(SYNC_PENDING_KEY)
+  console.log('✅ Local storage cleared')
 }
 
 // Helper functions for sync
