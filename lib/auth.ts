@@ -1,11 +1,28 @@
+import { supabase, isSupabaseConfigured, isOnline } from './supabase'
+
 export interface UserData {
+  userId?: string // Supabase user ID
   postalCode: string
+  deviceId?: string
   agreedToTerms: boolean
   timestamp: Date
 }
 
 const AUTH_KEY = 'passport-auth'
 const USER_DATA_KEY = 'passport-user-data'
+const DEVICE_ID_KEY = 'passport-device-id'
+
+// Generate or get device ID
+function getDeviceId(): string {
+  if (typeof window === 'undefined') return ''
+  
+  let deviceId = localStorage.getItem(DEVICE_ID_KEY)
+  if (!deviceId) {
+    deviceId = crypto.randomUUID()
+    localStorage.setItem(DEVICE_ID_KEY, deviceId)
+  }
+  return deviceId
+}
 
 export function isAuthenticated(): boolean {
   if (typeof window === 'undefined') return false
@@ -13,11 +30,56 @@ export function isAuthenticated(): boolean {
   return auth === 'true'
 }
 
-export function login(postalCode: string): void {
+export async function login(postalCode: string): Promise<void> {
   if (typeof window === 'undefined') return
   
+  const postalCodeUpper = postalCode.toUpperCase()
+  const deviceId = getDeviceId()
+  
+  let userId: string | undefined = undefined
+  
+  // Try Supabase first if configured and online
+  if (isSupabaseConfigured() && isOnline() && supabase) {
+    try {
+      // Check if user exists
+      const { data: existingUser, error: fetchError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('postal_code', postalCodeUpper)
+        .eq('device_id', deviceId)
+        .maybeSingle()
+      
+      if (fetchError && fetchError.code !== 'PGRST116') {
+        console.warn('Supabase fetch error, using localStorage:', fetchError)
+      } else if (existingUser) {
+        userId = existingUser.id
+      } else {
+        // Create new user
+        const { data: newUser, error: insertError } = await supabase
+          .from('users')
+          .insert({
+            postal_code: postalCodeUpper,
+            device_id: deviceId
+          })
+          .select('id')
+          .single()
+        
+        if (insertError) {
+          console.warn('Supabase insert error, using localStorage:', insertError)
+        } else {
+          userId = newUser.id
+        }
+      }
+    } catch (error) {
+      console.warn('Supabase error, using localStorage fallback:', error)
+    }
+  }
+  
+  // Store in localStorage (always, as backup)
   const userData: UserData = {
-    postalCode: postalCode.toUpperCase(),
+    userId,
+    postalCode: postalCodeUpper,
+    deviceId,
     agreedToTerms: true,
     timestamp: new Date(),
   }
@@ -30,6 +92,7 @@ export function logout(): void {
   if (typeof window === 'undefined') return
   localStorage.removeItem(AUTH_KEY)
   localStorage.removeItem(USER_DATA_KEY)
+  // Keep device ID for future logins
 }
 
 export function getUserData(): UserData | null {
@@ -45,5 +108,9 @@ export function getUserData(): UserData | null {
   } catch {
     return null
   }
+}
+
+export function getDeviceIdPublic(): string {
+  return getDeviceId()
 }
 

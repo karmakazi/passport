@@ -1,7 +1,10 @@
 import { PassportData, Stamp } from './types'
 import { LOCATIONS } from './locations'
+import { supabase, isSupabaseConfigured, isOnline } from './supabase'
+import { getUserData } from './auth'
 
 const STORAGE_KEY = 'passport-data'
+const SYNC_PENDING_KEY = 'passport-sync-pending'
 
 const getDefaultPassportData = (): PassportData => {
   const stamps: Record<string, Stamp> = {}
@@ -55,14 +58,35 @@ export const savePassportData = (data: PassportData): void => {
   }
 }
 
-export const collectStamp = (locationId: string): PassportData => {
+export const collectStamp = async (locationId: string): Promise<PassportData> => {
   const data = getPassportData()
   
   if (data.stamps[locationId]) {
     data.stamps[locationId].collectedAt = new Date()
   }
   
+  // Save to localStorage first (immediate)
   savePassportData(data)
+  
+  // Try to sync to Supabase
+  const userData = getUserData()
+  if (userData?.userId && isSupabaseConfigured() && isOnline() && supabase) {
+    try {
+      await supabase
+        .from('collected_stamps')
+        .insert({
+          user_id: userData.userId,
+          location_id: locationId
+        })
+      console.log('✅ Stamp synced to Supabase')
+    } catch (error) {
+      console.warn('⚠️ Failed to sync stamp to Supabase, saved locally:', error)
+      markSyncPending()
+    }
+  } else {
+    markSyncPending()
+  }
+  
   return data
 }
 
@@ -84,14 +108,168 @@ export const getCollectedStampsCount = (): number => {
   return Object.values(data.stamps).filter((stamp) => stamp.collectedAt !== null).length
 }
 
-export const enterContest = (): void => {
+export const enterContest = async (): Promise<void> => {
   const data = getPassportData()
   data.contestEntered = true
   savePassportData(data)
+  
+  // Try to sync to Supabase
+  const userData = getUserData()
+  if (userData?.userId && isSupabaseConfigured() && isOnline() && supabase) {
+    try {
+      await supabase
+        .from('contest_entries')
+        .insert({
+          user_id: userData.userId
+        })
+      console.log('✅ Contest entry synced to Supabase')
+    } catch (error) {
+      console.warn('⚠️ Failed to sync contest entry to Supabase:', error)
+    }
+  }
 }
 
 export const resetPassport = (): void => {
   if (typeof window === 'undefined') return
   localStorage.removeItem(STORAGE_KEY)
+  localStorage.removeItem(SYNC_PENDING_KEY)
+}
+
+// Helper functions for sync
+function markSyncPending(): void {
+  if (typeof window === 'undefined') return
+  localStorage.setItem(SYNC_PENDING_KEY, 'true')
+}
+
+function clearSyncPending(): void {
+  if (typeof window === 'undefined') return
+  localStorage.removeItem(SYNC_PENDING_KEY)
+}
+
+export function isSyncPending(): boolean {
+  if (typeof window === 'undefined') return false
+  return localStorage.getItem(SYNC_PENDING_KEY) === 'true'
+}
+
+// Sync localStorage data to Supabase
+export async function syncToSupabase(): Promise<boolean> {
+  if (!isSupabaseConfigured() || !isOnline() || !supabase) {
+    return false
+  }
+  
+  const userData = getUserData()
+  if (!userData?.userId) {
+    return false
+  }
+  
+  try {
+    const localData = getPassportData()
+    
+    // Sync all collected stamps
+    const collectedStamps = Object.entries(localData.stamps)
+      .filter(([_, stamp]) => stamp.collectedAt !== null)
+      .map(([locationId, stamp]) => ({
+        user_id: userData.userId!,
+        location_id: locationId,
+        collected_at: stamp.collectedAt?.toISOString()
+      }))
+    
+    if (collectedStamps.length > 0) {
+      // Use upsert to avoid duplicates
+      const { error: stampsError } = await supabase
+        .from('collected_stamps')
+        .upsert(collectedStamps, {
+          onConflict: 'user_id,location_id',
+          ignoreDuplicates: true
+        })
+      
+      if (stampsError) {
+        console.warn('Failed to sync stamps:', stampsError)
+        return false
+      }
+    }
+    
+    // Sync contest entry if entered
+    if (localData.contestEntered) {
+      const { error: contestError } = await supabase
+        .from('contest_entries')
+        .upsert({
+          user_id: userData.userId
+        }, {
+          onConflict: 'user_id',
+          ignoreDuplicates: true
+        })
+      
+      if (contestError) {
+        console.warn('Failed to sync contest entry:', contestError)
+      }
+    }
+    
+    clearSyncPending()
+    console.log('✅ Successfully synced to Supabase')
+    return true
+  } catch (error) {
+    console.warn('Sync failed:', error)
+    return false
+  }
+}
+
+// Load data from Supabase and merge with local
+export async function loadFromSupabase(): Promise<void> {
+  if (!isSupabaseConfigured() || !isOnline() || !supabase) {
+    return
+  }
+  
+  const userData = getUserData()
+  if (!userData?.userId) {
+    return
+  }
+  
+  try {
+    // Fetch stamps from Supabase
+    const { data: remoteStamps, error: stampsError } = await supabase
+      .from('collected_stamps')
+      .select('location_id, collected_at')
+      .eq('user_id', userData.userId)
+    
+    if (stampsError) {
+      console.warn('Failed to load stamps from Supabase:', stampsError)
+      return
+    }
+    
+    // Fetch contest entry
+    const { data: contestEntry, error: contestError } = await supabase
+      .from('contest_entries')
+      .select('id')
+      .eq('user_id', userData.userId)
+      .maybeSingle()
+    
+    if (contestError && contestError.code !== 'PGRST116') {
+      console.warn('Failed to load contest entry:', contestError)
+    }
+    
+    // Merge with local data
+    const localData = getPassportData()
+    
+    if (remoteStamps) {
+      remoteStamps.forEach((remoteStamp) => {
+        if (localData.stamps[remoteStamp.location_id]) {
+          // Use remote stamp if it exists and local doesn't, or if remote is older (was collected first)
+          if (!localData.stamps[remoteStamp.location_id].collectedAt) {
+            localData.stamps[remoteStamp.location_id].collectedAt = new Date(remoteStamp.collected_at)
+          }
+        }
+      })
+    }
+    
+    if (contestEntry) {
+      localData.contestEntered = true
+    }
+    
+    savePassportData(localData)
+    console.log('✅ Loaded data from Supabase')
+  } catch (error) {
+    console.warn('Failed to load from Supabase:', error)
+  }
 }
 

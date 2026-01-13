@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError('')
 
@@ -34,12 +34,18 @@ export default function LoginPage() {
       return
     }
 
-    // Store in local storage and redirect
+    // Store in local storage and sync to Supabase
     setIsSubmitting(true)
-    setTimeout(() => {
-      login(postalCode)
-      router.push('/')
-    }, 500)
+    try {
+      await login(postalCode)
+      setTimeout(() => {
+        router.push('/')
+      }, 300)
+    } catch (error) {
+      console.error('Login error:', error)
+      setError('An error occurred. Please try again.')
+      setIsSubmitting(false)
+    }
   }
 
   return (

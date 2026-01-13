@@ -6,7 +6,7 @@ import Header from '@/components/Header'
 import ProgressBar from '@/components/ProgressBar'
 import StampCard from '@/components/StampCard'
 import { LOCATIONS } from '@/lib/locations'
-import { getPassportData, getAllStampsCollected, getCollectedStampsCount } from '@/lib/storage'
+import { getPassportData, getAllStampsCollected, getCollectedStampsCount, loadFromSupabase, syncToSupabase, isSyncPending } from '@/lib/storage'
 import { PassportData } from '@/lib/types'
 
 export default function HomePage() {
@@ -17,16 +17,29 @@ export default function HomePage() {
   const [showInstructions, setShowInstructions] = useState(true)
 
   useEffect(() => {
-    const data = getPassportData()
-    setPassportData(data)
-    setCollectedCount(getCollectedStampsCount())
-    setAllCollected(getAllStampsCollected())
-    
-    // Check if user has closed instructions before
-    const instructionsClosed = localStorage.getItem('instructions-closed')
-    if (instructionsClosed === 'true') {
-      setShowInstructions(false)
+    const initializeData = async () => {
+      // Load data from Supabase if available
+      await loadFromSupabase()
+      
+      // Sync any pending local changes to Supabase
+      if (isSyncPending()) {
+        await syncToSupabase()
+      }
+      
+      // Update local state
+      const data = getPassportData()
+      setPassportData(data)
+      setCollectedCount(getCollectedStampsCount())
+      setAllCollected(getAllStampsCollected())
+      
+      // Check if user has closed instructions before
+      const instructionsClosed = localStorage.getItem('instructions-closed')
+      if (instructionsClosed === 'true') {
+        setShowInstructions(false)
+      }
     }
+    
+    initializeData()
   }, [])
 
   const handleCloseInstructions = () => {

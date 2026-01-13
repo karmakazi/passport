@@ -17,7 +17,7 @@ function ScanPageContent() {
   const [showCamera, setShowCamera] = useState(true)
   const [resetCounter, setResetCounter] = useState(0)
 
-  const handleScan = (locationId: string) => {
+  const handleScan = async (locationId: string) => {
     const location = getLocationById(locationId)
     
     if (!location) {
@@ -39,8 +39,8 @@ function ScanPageContent() {
     // Valid stamp - process the collection and stop camera
     setScanning(true)
     setShowCamera(false)
-    setTimeout(() => {
-      collectStamp(locationId)
+    setTimeout(async () => {
+      await collectStamp(locationId)
       setScannedLocation(location.name)
       setSuccess(true)
       setScanning(false)
