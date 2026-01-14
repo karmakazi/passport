@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getAllStampsCollected, getPassportData, enterContest } from '@/lib/storage'
 
@@ -9,7 +9,6 @@ const CONTEST_URL = process.env.NEXT_PUBLIC_CONTEST_URL || 'https://www.richmond
 
 export default function ContestPage() {
   const router = useRouter()
-  const [entering, setEntering] = useState(false)
 
   useEffect(() => {
     const allCollected = getAllStampsCollected()
@@ -29,28 +28,17 @@ export default function ContestPage() {
   }, [router])
 
   const handleEnterContest = async () => {
-    setEntering(true)
-    
     try {
       // Record contest entry in database
       console.log('📝 Recording contest entry...')
       await enterContest()
       console.log('✅ Contest entry recorded')
-      
-      // Open external contest page
-      window.open(CONTEST_URL, '_blank')
-      
-      // Redirect to success page
-      setTimeout(() => {
-        router.push('/success')
-      }, 1000)
     } catch (error) {
       console.error('❌ Failed to record contest entry:', error)
-      // Still open contest page even if recording fails
-      window.open(CONTEST_URL, '_blank')
     }
     
-    setEntering(false)
+    // Open external contest page
+    window.open(CONTEST_URL, '_blank')
   }
 
   return (
@@ -73,10 +61,9 @@ export default function ContestPage() {
 
         <button
           onClick={handleEnterContest}
-          disabled={entering}
-          className="w-full bg-gradient-to-r from-primary-600 to-accent-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02] active:scale-95 mb-4 disabled:opacity-50"
+          className="w-full bg-gradient-to-r from-primary-600 to-accent-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-[1.02] active:scale-95 mb-4"
         >
-          {entering ? 'Recording Entry...' : 'Enter Contest Now'}
+          Enter Contest Now
         </button>
 
         <button
