@@ -16,14 +16,29 @@ export default function TestDBPage() {
 
   const handleCreateUser = async () => {
     setLoading(true)
-    addLog('Creating user with postal code TST...')
+    addLog('━━━ CREATING USER: TST ━━━')
     
     try {
+      const { isSupabaseConfigured } = await import('@/lib/supabase')
+      
+      addLog(`  Supabase: ${isSupabaseConfigured() ? 'Configured' : 'NOT configured'}`)
+      addLog(`  Online: ${navigator.onLine}`)
+      
       const { login } = await import('@/lib/auth')
       await login('TST')
-      addLog('✅ User created')
+      
+      // Check if user has ID
+      const { getUserData } = await import('@/lib/auth')
+      const user = getUserData()
+      
+      if (user?.userId) {
+        addLog(`  ✅ User ID: ${user.userId.substring(0, 25)}...`)
+      } else {
+        addLog(`  ⚠️ NO USER ID - Supabase failed!`)
+        addLog(`  Check: Env vars set? Network working?`)
+      }
     } catch (err: any) {
-      addLog('❌ Error: ' + err.message)
+      addLog(`  ❌ Error: ${err.message}`)
     }
     
     setLoading(false)
