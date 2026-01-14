@@ -129,49 +129,32 @@ export const getCollectedStampsCount = (): number => {
 
 export const enterContest = async (): Promise<void> => {
   const data = getPassportData()
+  const userData = getUserData()
   
-  // Check if already entered
-  if (data.contestEntered) {
-    console.log('ℹ️ Contest already entered, skipping')
-    return
+  // Mark as entered in localStorage (for UI state)
+  if (!data.contestEntered) {
+    data.contestEntered = true
+    savePassportData(data)
   }
   
-  data.contestEntered = true
-  savePassportData(data)
-  
-  // Try to sync to Supabase (only if not already entered)
-  const userData = getUserData()
+  // Try to record in Supabase (prevents duplicates at database level)
   if (userData?.userId && isSupabaseConfigured() && isOnline() && supabase) {
     try {
-      // Check if entry already exists in database
-      const { data: existing, error: checkError } = await supabase
+      // Use upsert with ignoreDuplicates to prevent multiple entries
+      const { error } = await supabase
         .from('contest_entries')
-        .select('id')
-        .eq('user_id', userData.userId)
-        .maybeSingle()
+        .upsert(
+          { user_id: userData.userId },
+          { onConflict: 'user_id', ignoreDuplicates: true }
+        )
       
-      if (checkError && checkError.code !== 'PGRST116') {
-        console.warn('⚠️ Error checking existing entry:', checkError)
-      }
-      
-      if (existing) {
-        console.log('ℹ️ Contest entry already exists in database')
+      if (error) {
+        console.warn('⚠️ Contest entry error:', error)
       } else {
-        // Insert new entry
-        const { error: insertError } = await supabase
-          .from('contest_entries')
-          .insert({
-            user_id: userData.userId
-          })
-        
-        if (insertError) {
-          console.warn('⚠️ Failed to insert contest entry:', insertError)
-        } else {
-          console.log('✅ Contest entry recorded in Supabase')
-        }
+        console.log('✅ Contest entry recorded')
       }
     } catch (error) {
-      console.warn('⚠️ Failed to sync contest entry to Supabase:', error)
+      console.warn('⚠️ Failed to sync contest entry:', error)
     }
   }
 }
