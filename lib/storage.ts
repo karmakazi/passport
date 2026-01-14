@@ -151,47 +151,58 @@ export const enterContest = async (): Promise<void> => {
 export const resetPassport = async (): Promise<void> => {
   if (typeof window === 'undefined') return
   
-  // Delete from Supabase first
+  // Get user data BEFORE clearing anything
   const userData = getUserData()
+  console.log('🗑️ Reset: User ID:', userData?.userId)
+  
+  // Delete from Supabase FIRST (while we still have userId)
   if (userData?.userId && isSupabaseConfigured() && supabase) {
     try {
-      console.log('🗑️ Deleting stamps from Supabase for user:', userData.userId)
+      console.log('🗑️ Deleting from Supabase for user:', userData.userId)
       
-      // Delete all stamps for this user
+      // Delete all stamps
       const { error: stampsError } = await supabase
         .from('collected_stamps')
         .delete()
         .eq('user_id', userData.userId)
       
       if (stampsError) {
-        console.error('Failed to delete stamps:', stampsError)
+        console.error('❌ Failed to delete stamps:', stampsError)
       } else {
         console.log('✅ Stamps deleted from Supabase')
       }
       
-      // Delete contest entry if exists
+      // Delete contest entry
       const { error: contestError } = await supabase
         .from('contest_entries')
         .delete()
         .eq('user_id', userData.userId)
       
       if (contestError && contestError.code !== 'PGRST116') {
-        console.error('Failed to delete contest entry:', contestError)
+        console.error('⚠️ Failed to delete contest entry:', contestError)
       }
       
-      // Optionally delete the user record itself (uncomment if you want to fully reset)
-      // const { error: userError } = await supabase
-      //   .from('users')
-      //   .delete()
-      //   .eq('id', userData.userId)
+      // Delete the user record itself to force fresh start
+      const { error: userError } = await supabase
+        .from('users')
+        .delete()
+        .eq('id', userData.userId)
       
-      console.log('✅ Supabase data cleared')
+      if (userError) {
+        console.error('⚠️ Failed to delete user:', userError)
+      } else {
+        console.log('✅ User deleted from Supabase')
+      }
+      
+      console.log('✅ Supabase completely cleared')
     } catch (error) {
-      console.error('Error clearing Supabase data:', error)
+      console.error('❌ Error clearing Supabase:', error)
     }
+  } else {
+    console.warn('⚠️ No userId or Supabase not configured')
   }
   
-  // Clear localStorage
+  // NOW clear localStorage (after Supabase is cleaned)
   localStorage.removeItem(STORAGE_KEY)
   localStorage.removeItem(SYNC_PENDING_KEY)
   console.log('✅ Local storage cleared')
