@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { LOCATIONS } from '@/lib/locations'
-import { resetPassport } from '@/lib/storage'
+import { resetPassport, collectStamp } from '@/lib/storage'
 import { logout, getUserData } from '@/lib/auth'
 import QRCode from '@/components/QRCode'
 import { generateLocationQRValue, getNetworkURL } from '@/lib/utils'
@@ -29,6 +29,20 @@ export default function DemoPage() {
   const handleReset = async () => {
     if (confirm('Are you sure you want to reset your passport? This will clear all collected stamps from your device AND the database.')) {
       await resetPassport()
+      router.push('/')
+    }
+  }
+
+  const handleCollect6Stamps = async () => {
+    if (confirm('Collect first 6 stamps automatically?')) {
+      console.log('🚀 Auto-collecting 6 stamps...')
+      // Collect first 6 locations (excluding the bonus)
+      for (let i = 0; i < 6; i++) {
+        await collectStamp(LOCATIONS[i].id)
+        console.log(`✅ Collected ${LOCATIONS[i].id}`)
+      }
+      console.log('✅ All 6 stamps collected!')
+      alert('6 stamps collected! Check your passport.')
       router.push('/')
     }
   }
@@ -209,12 +223,20 @@ export default function DemoPage() {
           <p className="text-gray-600 mb-4">
             Clear all collected stamps and start fresh. This will remove all your progress.
           </p>
-          <button
-            onClick={handleReset}
-            className="bg-red-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-red-600 transition-all shadow-lg hover:shadow-xl"
-          >
-            Reset Passport
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={handleCollect6Stamps}
+              className="bg-green-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-green-600 transition-all shadow-lg hover:shadow-xl"
+            >
+              ⚡ Collect 6 Stamps (Quick Test)
+            </button>
+            <button
+              onClick={handleReset}
+              className="bg-red-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-red-600 transition-all shadow-lg hover:shadow-xl"
+            >
+              Reset Passport
+            </button>
+          </div>
         </div>
       </main>
     </div>
