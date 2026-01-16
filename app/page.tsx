@@ -14,7 +14,7 @@ export default function HomePage() {
   const [passportData, setPassportData] = useState<PassportData | null>(null)
   const [collectedCount, setCollectedCount] = useState(0)
   const [allCollected, setAllCollected] = useState(false)
-  const [showInstructions, setShowInstructions] = useState(true)
+  const [isInstructionsExpanded, setIsInstructionsExpanded] = useState(true)
 
   useEffect(() => {
     const initializeData = async () => {
@@ -32,19 +32,20 @@ export default function HomePage() {
       setCollectedCount(getCollectedStampsCount())
       setAllCollected(getAllStampsCollected())
       
-      // Check if user has closed instructions before
-      const instructionsClosed = localStorage.getItem('instructions-closed')
-      if (instructionsClosed === 'true') {
-        setShowInstructions(false)
+      // Check if user has collapsed instructions before
+      const instructionsExpanded = localStorage.getItem('instructions-expanded')
+      if (instructionsExpanded === 'false') {
+        setIsInstructionsExpanded(false)
       }
     }
     
     initializeData()
   }, [])
 
-  const handleCloseInstructions = () => {
-    setShowInstructions(false)
-    localStorage.setItem('instructions-closed', 'true')
+  const toggleInstructions = () => {
+    const newState = !isInstructionsExpanded
+    setIsInstructionsExpanded(newState)
+    localStorage.setItem('instructions-expanded', newState.toString())
   }
 
   const handleScanClick = () => {
@@ -77,39 +78,58 @@ export default function HomePage() {
           <ProgressBar current={collectedCount} total={LOCATIONS.length} />
         </div>
 
-        {/* Instructions - Show unless closed OR all stamps collected */}
-        {showInstructions && !allCollected && (
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 animate-slide-up relative">
-            <button
-              onClick={handleCloseInstructions}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Close"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <h2 className="text-xl font-bold text-gray-800 mb-3 pr-8">
-              How It Works
-            </h2>
-            <ol className="space-y-2 text-gray-600">
-              <li className="flex gap-3">
-                <span className="font-bold text-primary-600 flex-shrink-0">1.</span>
-                <span>Visit a participating site, event, or program. Find all the participating sites and events here</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="font-bold text-primary-600 flex-shrink-0">2.</span>
-                <span>Scan the QR code on-site</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="font-bold text-primary-600 flex-shrink-0">3.</span>
-                <span>Get your stamp instantly</span>
-              </li>
-              <li className="flex gap-3">
-                <span className="font-bold text-primary-600 flex-shrink-0">4.</span>
-                <span>Plan your next stop cultural adventure</span>
-              </li>
-            </ol>
+        {/* Instructions - Show unless all stamps collected */}
+        {!allCollected && (
+          <div className="bg-white rounded-2xl shadow-lg mb-6 animate-slide-up relative overflow-hidden transition-all duration-300">
+            {isInstructionsExpanded ? (
+              // Expanded state
+              <div className="p-6">
+                <button
+                  onClick={toggleInstructions}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Minimize"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                <h2 className="text-xl font-bold text-gray-800 mb-3 pr-8">
+                  How It Works
+                </h2>
+                <ol className="space-y-2 text-gray-600">
+                  <li className="flex gap-3">
+                    <span className="font-bold text-primary-600 flex-shrink-0">1.</span>
+                    <span>Visit a participating site, event, or program. Find all the participating sites and events here</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-bold text-primary-600 flex-shrink-0">2.</span>
+                    <span>Scan the QR code on-site</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-bold text-primary-600 flex-shrink-0">3.</span>
+                    <span>Get your stamp instantly</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="font-bold text-primary-600 flex-shrink-0">4.</span>
+                    <span>Plan your next stop cultural adventure</span>
+                  </li>
+                </ol>
+              </div>
+            ) : (
+              // Collapsed state
+              <button
+                onClick={toggleInstructions}
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                aria-label="Expand How It Works"
+              >
+                <h2 className="text-lg font-bold text-gray-800">
+                  How It Works
+                </h2>
+                <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+            )}
           </div>
         )}
 
