@@ -22,18 +22,15 @@ export default function ContestPage() {
     // Don't redirect if already entered - let them click again to open external link
   }, [router])
 
-  const handleEnterContest = async () => {
-    try {
-      // Record contest entry in database
-      console.log('📝 Recording contest entry...')
-      await enterContest()
-      console.log('✅ Contest entry recorded')
-    } catch (error) {
-      console.error('❌ Failed to record contest entry:', error)
-    }
-    
-    // Open external contest page
+  const handleEnterContest = () => {
+    // Open external page IMMEDIATELY (before any async operations)
+    // This prevents Safari/iOS from blocking the popup
     window.open(CONTEST_URL, '_blank')
+    
+    // Record entry in background (non-blocking)
+    enterContest()
+      .then(() => console.log('✅ Contest entry recorded'))
+      .catch((error) => console.error('❌ Failed to record:', error))
   }
 
   return (
