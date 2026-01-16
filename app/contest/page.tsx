@@ -12,19 +12,14 @@ export default function ContestPage() {
 
   useEffect(() => {
     const allCollected = getAllStampsCollected()
-    const passportData = getPassportData()
     
     if (!allCollected) {
       // Redirect if haven't collected all stamps
       router.push('/')
       return
     }
-
-    if (passportData.contestEntered) {
-      // Already entered, go to success
-      router.push('/success')
-      return
-    }
+    
+    // Don't redirect if already entered - let them click again to open external link
   }, [router])
 
   const handleEnterContest = async () => {

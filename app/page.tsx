@@ -113,28 +113,17 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Contest Entry Button - Show where instructions were */}
-        {allCollected && !passportData.contestEntered && (
+        {/* Contest Entry Button - Always show when stamps collected */}
+        {allCollected && (
           <div className="bg-gradient-to-r from-accent-500 to-primary-500 rounded-2xl shadow-xl p-6 text-white text-center animate-bounce-in mb-6">
-            <h3 className="text-2xl font-bold mb-2">Congratulations!</h3>
-            <p className="mb-4">You've collected all stamps!</p>
+            <h3 className="text-2xl font-bold mb-2">You Did It!</h3>
+            <p className="mb-4">You've collected the required stamps!</p>
             <button
               onClick={handleContestClick}
               className="bg-white text-accent-600 font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-              Enter Contest Now
+              Enter Contest
             </button>
-          </div>
-        )}
-
-        {passportData.contestEntered && (
-          <div className="bg-green-100 border-2 border-green-500 rounded-2xl shadow-lg p-6 text-center mb-6">
-            <h3 className="text-xl font-bold text-green-800 mb-2">
-              Contest Entry Submitted!
-            </h3>
-            <p className="text-green-700">
-              Thank you! Good luck!
-            </p>
           </div>
         )}
 
