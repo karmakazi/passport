@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#2F4F4F"/>
+  <rect x="50" y="50" width="300" height="200" fill="#556B2F" rx="10"/>
+  <circle cx="200" cy="150" r="60" fill="#FFFFFF" opacity="0.3"/>
+  <text x="200" y="155" font-family="Arial, sans-serif" font-size="40" fill="#FFFFFF" text-anchor="middle" font-weight="bold">BOOK</text>
+  <text x="200" y="185" font-family="Arial, sans-serif" font-size="40" fill="#FFFFFF" text-anchor="middle" font-weight="bold">NOOK</text>
+</svg>
+
