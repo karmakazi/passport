@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="bg-white shadow-lg">
       <div className="container mx-auto px-4 py-6">
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-2">
           <Image 
             src="/images/RH_Logo_RGB_S.png" 
             alt="Richmond Hill Logo" 
@@ -17,8 +17,8 @@ export default function Header() {
           <Image 
             src="/images/Passport to Culture_logo_cmyk.png" 
             alt="Passport to Culture" 
-            width={240} 
-            height={120}
+            width={180} 
+            height={90}
             className="flex-shrink-0"
           />
         </div>
