@@ -14,10 +14,13 @@ export default function Header() {
             height={180}
             className="flex-shrink-0"
           />
-          <div className="flex flex-col">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-800">Passport to Culture</h1>
-            <p className="text-gray-600 text-sm">Collect stamps & win prizes</p>
-          </div>
+          <Image 
+            src="/images/Passport to Culture_logo_cmyk.png" 
+            alt="Passport to Culture" 
+            width={240} 
+            height={120}
+            className="flex-shrink-0"
+          />
         </div>
       </div>
     </header>

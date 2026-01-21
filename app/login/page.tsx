@@ -62,17 +62,11 @@ export default function LoginPage() {
           />
           <div>
             <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-              Passport to Culture
+            Explore Culture and Collect Stamps
             </h1>
             <div className="space-y-3 text-gray-600 text-left">
               <p>
-                Explore the wide array of arts, heritage, culture, and events across Richmond Hill.
-              </p>
-              <p>
-                Scan QR codes at participating sites, programs, and events to collect stamps.
-              </p>
-              <p>
-                Complete your passport for a chance to win the City of Richmond Hill Cultural Prize Pack.
+              Discover the wide array of arts, heritage, culture, and events across Richmond Hill.
               </p>
             </div>
           </div>
