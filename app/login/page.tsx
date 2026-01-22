@@ -30,7 +30,7 @@ export default function LoginPage() {
     }
 
     if (!agreedToTerms) {
-      setError('Please agree to the terms and conditions')
+      setError('Please agree to the privacy statement')
       return
     }
 
@@ -100,30 +100,47 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {/* Terms and Conditions */}
+            {/* Privacy Statement */}
             <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl dark:bg-gray-50">
               <input
                 type="checkbox"
                 id="terms"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 w-5 h-5 rounded border-2 border-gray-300 focus:outline-none"
+                className="w-5 h-5 rounded border-2 border-gray-300 focus:outline-none flex-shrink-0"
                 style={{
                   accentColor: '#005030',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  marginTop: '-0.0625rem'
                 }}
                 disabled={isSubmitting}
                 required
               />
               <label htmlFor="terms" className="text-sm text-gray-700 dark:text-gray-700">
-                I agree to the{' '}
-                <a href="#" className="text-primary-600 hover:text-primary-700 font-semibold">
-                  terms and conditions
-                </a>{' '}
-                and{' '}
-                <a href="#" className="text-primary-600 hover:text-primary-700 font-semibold">
-                  privacy policy
-                </a>
+                <div className="space-y-2">
+                  <p className="font-semibold">I agree to the following privacy statement:</p>
+                  <div className="space-y-1">
+                    <p className="font-semibold">Privacy & Data Use</p>
+                    <p>We collect:</p>
+                    <ul className="list-disc ml-5 space-y-1">
+                      <li>Your progress (locations visited and dates)</li>
+                      <li>General location (first 3 characters of your postal code)</li>
+                    </ul>
+                    <p className="mt-2">
+                      We do not collect your name, email, or phone number. Your activity is anonymous, used for statistics, and is never linked to your personal identity.
+                    </p>
+                  </div>
+                  <p className="mt-2">
+                    <a 
+                      href="https://www.richmondhill.ca/en/living-here/privacystatement.aspx" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-primary-600 hover:text-primary-700 font-semibold underline"
+                    >
+                      Privacy Statement & Contact Information
+                    </a>
+                  </p>
+                </div>
               </label>
             </div>
 
@@ -155,13 +172,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* Demo Note */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-            <p className="text-xs text-blue-800 text-center">
-              <span className="font-semibold">Demo Mode:</span> No data is sent to a server. Information is stored locally on your device.
-            </p>
-          </div>
         </div>
       </div>
     </div>
