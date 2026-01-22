@@ -107,7 +107,11 @@ export default function LoginPage() {
                 id="terms"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 w-5 h-5 text-primary-600 bg-white border-gray-300 rounded focus:ring-primary-500 dark:bg-white dark:border-gray-300"
+                className="mt-1 w-5 h-5 rounded border-2 border-gray-300 focus:outline-none"
+                style={{
+                  accentColor: '#005030',
+                  cursor: 'pointer'
+                }}
                 disabled={isSubmitting}
                 required
               />
