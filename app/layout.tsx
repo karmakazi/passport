@@ -21,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className="bg-gradient-to-br from-primary-50 via-white to-accent-50 min-h-screen">
+    <html lang="en" className="h-full">
+      <body className="bg-gradient-to-br from-primary-50 via-white to-accent-50 min-h-full">
         <AuthGuard>
           {children}
         </AuthGuard>
