@@ -99,19 +99,37 @@ export default function HomePage() {
                 <ol className="space-y-2 text-gray-600">
                   <li className="flex gap-3">
                     <span className="font-bold text-primary-600 flex-shrink-0">1.</span>
-                    <span>Visit a participating site, event, or program. Find all the participating sites and events here</span>
+                    <span>Visit a participating site, event, or program.{' '}
+                      <a 
+                        href="https://www.richmondhill.ca/en/things-to-do/passport-to-culture.aspx" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary-600 hover:text-primary-700 font-semibold underline"
+                      >
+                        Find all the participating sites and events here
+                      </a>.
+                    </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="font-bold text-primary-600 flex-shrink-0">2.</span>
-                    <span>Scan the QR code on-site</span>
+                    <span>Scan the QR code on-site.</span>
                   </li>
                   <li className="flex gap-3">
                     <span className="font-bold text-primary-600 flex-shrink-0">3.</span>
-                    <span>Get your stamp instantly</span>
+                    <span>Collect your stamp instantly.</span>
                   </li>
                   <li className="flex gap-3">
                     <span className="font-bold text-primary-600 flex-shrink-0">4.</span>
-                    <span>Plan your next stop cultural adventure</span>
+                    <span>
+                      <a 
+                        href="https://www.richmondhill.ca/en/things-to-do/passport-to-culture.aspx" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary-600 hover:text-primary-700 font-semibold underline"
+                      >
+                        Plan your next stop cultural adventure
+                      </a>. Collect six stamps to complete the passport.
+                    </span>
                   </li>
                 </ol>
               </div>
