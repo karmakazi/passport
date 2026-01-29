@@ -161,6 +161,7 @@ export default function HomePage() {
                   location={location}
                   isCollected={stamp?.collectedAt !== null}
                   collectedAt={stamp?.collectedAt}
+                  onClick={() => router.push('/scan')}
                 />
               )
             })}

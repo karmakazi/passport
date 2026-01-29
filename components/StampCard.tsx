@@ -7,15 +7,18 @@ interface StampCardProps {
   location: Location
   isCollected: boolean
   collectedAt?: Date | null
+  onClick?: () => void
 }
 
-export default function StampCard({ location, isCollected, collectedAt }: StampCardProps) {
+export default function StampCard({ location, isCollected, collectedAt, onClick }: StampCardProps) {
   return (
     <div 
+      onClick={onClick}
       className={`
         relative bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 flex flex-col
         ${isCollected ? 'border-2 border-primary-500' : 'border-2 border-gray-200'}
-        hover:shadow-xl
+        hover:shadow-xl transform hover:scale-105 active:scale-95
+        ${onClick ? 'cursor-pointer' : ''}
       `}
     >
       {/* Location Image */}

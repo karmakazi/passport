@@ -169,10 +169,6 @@ function ScanPageContent() {
               </div>
             </div>
           )}
-
-          <p className="text-center text-gray-600 text-sm">
-            In production, this would activate your device camera to scan QR codes
-          </p>
         </div>
 
         {/* Manual Entry for Demo */}
