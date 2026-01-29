@@ -73,18 +73,32 @@ export default function CameraScanner({ onScanSuccess, onScanError, resetTrigger
 
   if (error) {
     return (
-      <div className="relative aspect-square max-w-md mx-auto mb-6 bg-red-50 rounded-2xl overflow-hidden border-2 border-red-200">
-        <div className="absolute inset-0 flex items-center justify-center p-8">
-          <div className="text-center">
-            <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <h3 className="text-lg font-bold text-red-800 mb-2">Camera Access Denied</h3>
-            <p className="text-sm text-red-600 mb-4">{error}</p>
-            <p className="text-xs text-red-500">
-              Please enable camera permissions in your browser settings and refresh the page.
-            </p>
+      <div className="relative max-w-md mx-auto mb-6 bg-red-50 rounded-2xl overflow-hidden border-2 border-red-200 p-6">
+        <div className="text-center">
+          <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <h3 className="text-xl font-bold text-red-800 mb-3">Camera Access Required</h3>
+          <p className="text-sm text-gray-700 mb-4">
+            To scan QR codes, this app needs permission to access your camera.
+          </p>
+          
+          <div className="bg-white rounded-xl p-4 mb-4 text-left">
+            <p className="text-sm font-semibold text-gray-800 mb-2">How to enable camera access:</p>
+            <ol className="text-xs text-gray-600 space-y-2 list-decimal list-inside">
+              <li>Look for the camera icon in your browser's address bar</li>
+              <li>Click on it and select "Allow" for camera permissions</li>
+              <li>Refresh this page to start scanning</li>
+            </ol>
           </div>
+          
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-xl transition-all"
+          >
+            Refresh Page
+          </button>
         </div>
       </div>
     )

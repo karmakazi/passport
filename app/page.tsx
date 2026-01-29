@@ -132,6 +132,9 @@ export default function HomePage() {
                     </span>
                   </li>
                 </ol>
+                <p className="text-sm text-gray-600 mt-4 italic">
+                  Note: Stamps will not be collected if you are using an incognito or private browser.
+                </p>
               </div>
             ) : (
               // Collapsed state

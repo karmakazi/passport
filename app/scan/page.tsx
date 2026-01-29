@@ -135,30 +135,62 @@ function ScanPageContent() {
         {/* Camera Scanner */}
         <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           {showCamera && !scanning && (
-            <>
-              <CameraScanner 
-                onScanSuccess={handleQRScan}
-                onScanError={(err) => {
-                  setError(err)
-                  setShowCamera(false)
-                }}
-                resetTrigger={resetCounter}
-              />
-              
-              {/* Floating error message over camera */}
-              {error && (
-                <div className="fixed top-20 left-4 right-4 z-50 animate-bounce-in">
-                  <div className="bg-red-500 text-white px-4 py-3 rounded-xl shadow-2xl max-w-md mx-auto">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                      <span className="font-semibold">{error}</span>
-                    </div>
-                  </div>
+            <CameraScanner 
+              onScanSuccess={handleQRScan}
+              onScanError={(err) => {
+                setError(err)
+                setShowCamera(false)
+              }}
+              resetTrigger={resetCounter}
+            />
+          )}
+          
+          {!showCamera && !scanning && error && (
+            <div className="relative max-w-md mx-auto mb-6 bg-red-50 rounded-2xl overflow-hidden border-2 border-red-200 p-6">
+              <div className="text-center">
+                <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <h3 className="text-xl font-bold text-red-800 mb-3">Camera Access Issue</h3>
+                <p className="text-sm text-gray-700 mb-4">
+                  {error.includes('NotReadableError') || error.includes('Could not start video source')
+                    ? 'The camera is currently in use by another application or there is a hardware issue.'
+                    : 'To scan QR codes, this app needs permission to access your camera.'}
+                </p>
+                
+                <div className="bg-white rounded-xl p-4 mb-4 text-left">
+                  <p className="text-sm font-semibold text-gray-800 mb-2">
+                    {error.includes('NotReadableError') || error.includes('Could not start video source')
+                      ? 'Try these steps:'
+                      : 'How to enable camera access:'}
+                  </p>
+                  <ol className="text-xs text-gray-600 space-y-2 list-decimal list-inside">
+                    {error.includes('NotReadableError') || error.includes('Could not start video source') ? (
+                      <>
+                        <li>Close any other apps that might be using your camera</li>
+                        <li>Make sure no other browser tabs are using the camera</li>
+                        <li>Try restarting your browser</li>
+                        <li>If the issue persists, try restarting your device</li>
+                      </>
+                    ) : (
+                      <>
+                        <li>Look for the camera icon in your browser's address bar</li>
+                        <li>Click on it and select "Allow" for camera permissions</li>
+                        <li>Refresh this page to start scanning</li>
+                      </>
+                    )}
+                  </ol>
                 </div>
-              )}
-            </>
+                
+                <button
+                  onClick={() => window.location.reload()}
+                  className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-xl transition-all"
+                >
+                  Refresh Page
+                </button>
+              </div>
+            </div>
           )}
           
           {scanning && (
