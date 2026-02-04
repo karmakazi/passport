@@ -26,6 +26,11 @@ export default function RootLayout({
         <AuthGuard>
           {children}
         </AuthGuard>
+        <footer className="w-full py-4 text-center">
+          <p className="text-xs text-gray-500">
+            This project is funded in part by Central Counties Tourism.
+          </p>
+        </footer>
       </body>
     </html>
   )

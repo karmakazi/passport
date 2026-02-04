@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getAllStampsCollected, getPassportData, enterContest } from '@/lib/storage'
 
 // External contest URL managed by municipality
-const CONTEST_URL = process.env.NEXT_PUBLIC_CONTEST_URL || 'https://www.richmondhill.ca/contest'
+const CONTEST_URL = process.env.NEXT_PUBLIC_CONTEST_URL || 'https://forms.richmondhill.ca/Community-Services/Passport-to-Culture-Contest-Entry-Form'
 
 export default function ContestPage() {
   const router = useRouter()

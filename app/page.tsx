@@ -56,10 +56,6 @@ export default function HomePage() {
     router.push('/contest')
   }
 
-  const handleDemoClick = () => {
-    router.push('/demo')
-  }
-
   if (!passportData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -191,7 +187,7 @@ export default function HomePage() {
 
       </main>
 
-      {/* Floating Action Buttons */}
+      {/* Floating Action Button */}
       <div className="fixed bottom-6 left-0 right-0 flex flex-col items-center gap-3 px-4 z-50">
         <button
           onClick={handleScanClick}
@@ -201,12 +197,6 @@ export default function HomePage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
           </svg>
           <span className="text-lg">Scan QR Code</span>
-        </button>
-        <button
-          onClick={handleDemoClick}
-          className="bg-white text-gray-700 font-semibold py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 border-2 border-gray-200"
-        >
-          <span className="text-sm">Demo & Reset</span>
         </button>
       </div>
     </div>
