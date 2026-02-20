@@ -30,6 +30,17 @@ export default function RootLayout({
           <p className="text-xs text-gray-500">
             This project is funded in part by Central Counties Tourism.
           </p>
+          <p className="text-xs text-gray-500 mt-1">
+            Powered by{' '}
+            <a 
+              href="https://www.discvr.ca" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-800 underline"
+            >
+              Discvr
+            </a>
+          </p>
         </footer>
       </body>
     </html>
