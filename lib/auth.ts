@@ -12,13 +12,31 @@ const AUTH_KEY = 'passport-auth'
 const USER_DATA_KEY = 'passport-user-data'
 const DEVICE_ID_KEY = 'passport-device-id'
 
+// Polyfill for crypto.randomUUID() - works in non-secure contexts
+function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    try {
+      return crypto.randomUUID()
+    } catch (e) {
+      // Fall through to polyfill if crypto.randomUUID fails
+    }
+  }
+  
+  // Fallback UUID generation for non-secure contexts
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0
+    const v = c === 'x' ? r : (r & 0x3 | 0x8)
+    return v.toString(16)
+  })
+}
+
 // Generate or get device ID
 function getDeviceId(): string {
   if (typeof window === 'undefined') return ''
   
   let deviceId = localStorage.getItem(DEVICE_ID_KEY)
   if (!deviceId) {
-    deviceId = crypto.randomUUID()
+    deviceId = generateUUID()
     localStorage.setItem(DEVICE_ID_KEY, deviceId)
   }
   return deviceId

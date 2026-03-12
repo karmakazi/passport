@@ -53,7 +53,8 @@ export default function HomePage() {
   }
 
   const handleContestClick = () => {
-    router.push('/contest')
+    // Open external contest form directly
+    window.open('https://forms.richmondhill.ca/Community-Services/Passport-to-Culture-Contest-Entry-Form', '_blank')
   }
 
   if (!passportData) {
